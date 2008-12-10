@@ -110,11 +110,6 @@ module Google
         self.set_tooltip(tooltip_options) if tooltip_options
       end
     end
-    
-    def self.new_from_encoded(options = {})
-      options.default! :from_encoded => true
-      new(options)
-    end
 
     # Adds a vertex at the given +location+ and updates the shape of the polygon.
     def add_vertex(location)

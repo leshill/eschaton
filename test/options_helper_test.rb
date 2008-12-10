@@ -87,7 +87,7 @@ class OptionsHelperTest < Test::Unit::TestCase
     
     # Make sure no escaping occurs   
     line = {:points => '\a', :levels => '\a'}
-    assert_equal '{levels: "\\\\a", points: "\\\\a"}',
+    assert_equal '{levels: "\a", points: "\a"}',
                  Google::OptionsHelper.to_encoded_polyline(line)    
   end
   
