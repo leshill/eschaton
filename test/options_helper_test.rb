@@ -83,7 +83,12 @@ class OptionsHelperTest < Test::Unit::TestCase
     line = {:points => 'ihglFxjiuMkAeSzMkHbJxMqFfQaOoB', :levels => 'PFHFGP'}
 
     assert_equal '{levels: "PFHFGP", points: "ihglFxjiuMkAeSzMkHbJxMqFfQaOoB"}',
-                  Google::OptionsHelper.to_encoded_polyline(line)                  
+                  Google::OptionsHelper.to_encoded_polyline(line)
+    
+    # Make sure no escaping occurs   
+    line = {:points => '\a', :levels => '\a'}
+    assert_equal '{levels: "\\\\a", points: "\\\\a"}',
+                 Google::OptionsHelper.to_encoded_polyline(line)    
   end
   
   def test_to_encoded_polylines
