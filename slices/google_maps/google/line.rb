@@ -91,7 +91,8 @@ module Google
 
         if self.encoded?
           encoded_options = self.encoded.merge(:color => colour, :weight => thickness, :opacity => opacity)
-          self << "#{self.var} = new GPolyline.fromEncoded(#{encoded_options.to_google_options});"
+          encoded_argument = Google::OptionsHelper.to_encoded_polyline(encoded_options)
+          self << "#{self.var} = new GPolyline.fromEncoded(#{encoded_argument});"
         else
           self << "#{self.var} = new GPolyline([#{self.vertices.join(', ')}], #{colour.to_js}, #{thickness.to_js}, #{opacity.to_js});"
         end
