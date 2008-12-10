@@ -92,7 +92,7 @@ module Google
         tooltip_options = options.extract(:tooltip)
                 
         remaining_options = options
-
+        
         if self.encoded?
           encode_options = {:polylines => Google::OptionsHelper.to_encoded_polylines(:lines => self.encoded,
                                                                                      :color => border_colour,
@@ -109,7 +109,11 @@ module Google
         self.enable_editing! if editable
         self.set_tooltip(tooltip_options) if tooltip_options
       end
-
+    end
+    
+    def self.new_from_encoded(options = {})
+      options.default! :from_encoded => true
+      new(options)
     end
 
     # Adds a vertex at the given +location+ and updates the shape of the polygon.
