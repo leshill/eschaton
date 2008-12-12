@@ -217,6 +217,11 @@ module Google # :nodoc:
       script << "#{self.var}.addControl(#{arguments.join(', ')});"
     end
 
+    # Adds a pane with the given +options+ which can be anything Google::Pane supports.
+    def add_pane(options)
+      self.add_control Google::Pane.new(options)
+    end
+
     # Adds a control or controls to the map, see Control_types of valid controls.
     # The controls will all be placed at their default positions, if you need control over the position use add_control.   
     #

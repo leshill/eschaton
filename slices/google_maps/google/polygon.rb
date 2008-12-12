@@ -35,7 +35,7 @@ module Google
     # * +tooltip+ - Optional. See Google::Tooltip#new for valid options.    
     # 
     # ==== Encoded options
-    # * +encoded+ - Optional. A single hash or array of hashes witht he below options, which represent encoded polylines.
+    # * +encoded+ - Optional. A single hash or array of hashes with the below options, which represent encoded polylines.
     #   * +points+ - A string containing the encoded latitude and longitude coordinates.
     #   * +levels+ - A string containing the encoded polyline zoom level groups
     #   * +num_levels+ - The number of zoom levels contained in the encoded +levels+ option.

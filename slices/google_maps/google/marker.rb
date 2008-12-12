@@ -86,7 +86,6 @@ module Google
 
       if create_var?
         location = Google::OptionsHelper.to_location(options.extract(:location))
-        #@location = OptionsHandler.to_location!(options) #:extract => true
 
         self.icon = if icon = options.extract(:icon)
                       Google::OptionsHelper.to_icon(icon)
