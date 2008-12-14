@@ -23,12 +23,8 @@ h2. Eschaton general
   * When in ruby and ruby objects are availble return those, otherwise return their javascript equivalents in the form of strings.
     i.e if map.center = Google::Location return that, otherwise return 'map.getCenter()'. This will make sure "predictable" results occur when the generated
     script executes
-
-  * Eschaton seems to be loading up *twice* during startup in rails 2.1, investigate!
  
 h2. Eschaton dev
-  
-  * Move Pane code into eschaton.js and metafy as need be!
  
   * See Google::Circle and refactor into various 'shape' classes.
     Rename draw_circle in eschaton.js to 'draw_shape' and metafy as need be!
