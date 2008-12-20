@@ -61,20 +61,20 @@ class PaneTest < Test::Unit::TestCase
     Eschaton.with_global_script do
       pane = Google::Pane.new(:text => 'Poly Jean Harvey is indeed a unique women')
 
-      assert_output_fixture '$("pane").update("This is new html");',
+      assert_output_fixture 'Element.update("pane", "This is new html");',
                             Eschaton.with_global_script  {
                               pane.replace_html :text => "This is new html" 
                             }
 
-      assert_output_fixture '$("pane").update("This is new html");',
+      assert_output_fixture 'Element.update("pane", "This is new html");',
                             Eschaton.with_global_script {
                               pane.replace_html "This is new html" 
                             }
 
-      assert_output_fixture '$("pane").update("test output for render");',
+      assert_output_fixture 'Element.update("pane", "test output for render");',
                             Eschaton.with_global_script {
                               pane.replace_html :partial => 'new_html' 
-                            }                        
+                            }
     end    
   end
   
