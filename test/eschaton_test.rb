@@ -1,15 +1,15 @@
 require File.dirname(__FILE__) + '/test_helper'
 
 class TestJavascriptObject
-  
+
   def self.write_one
     Eschaton.global_script << "One!"
   end
-  
+
   def write_two
     Eschaton.global_script << "Two!"    
-  end  
-  
+  end
+
 end
 
 class EschatonTest < Test::Unit::TestCase
@@ -46,14 +46,14 @@ class EschatonTest < Test::Unit::TestCase
       assert_equal script, Eschaton.global_script
     end
   end
-  
+
   def test_global_script_with_no_script
     assert_nil Eschaton.global_script
-  
+
     return_script = Eschaton.with_global_script do |script|
                       assert_not_nil script
                       assert_not_nil Eschaton.global_script
-                      assert_equal script, Eschaton.global_script                      
+                      assert_equal script, Eschaton.global_script         
                     end
 
     assert_nil Eschaton.global_script

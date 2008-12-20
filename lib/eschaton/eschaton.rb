@@ -23,7 +23,7 @@ class Eschaton # :nodoc:
     end
 
     url.gsub!('&amp;', '&')
-    
+
     "'#{url}'"
   end
 
@@ -40,40 +40,28 @@ class Eschaton # :nodoc:
     options.default! :reset_after => false
 
     previous_script = unless options[:reset_after]
-                        JavascriptObject.global_script
+                        self.global_script
                       end
-    
-    JavascriptObject.global_script = script
+
+    self.global_script = script
 
     yield script
 
-    JavascriptObject.global_script = previous_script
+    self.global_script = previous_script
 
     script
   end
 
   def self.global_script=(script)
-    JavascriptObject.global_script = script
+    Thread.current[:eschaton_global_script] = script
   end
 
-  # TODO - Add .global_script and remove JavascriptObject.global_script  
   def self.global_script
-    global_script = JavascriptObject.global_script
+    global_script = Thread.current[:eschaton_global_script]
 
-    if block_given?
-      yield global_script
-    end
+    yield global_script if block_given?
 
     global_script
-  end
-
-
-  def self.disabled?
-    Thread.current[:comment_observer_disabled]
-  end
-
-  def disabled=(value)
-    Thread.current[:comment_observer_disabled] = value
   end
 
 end

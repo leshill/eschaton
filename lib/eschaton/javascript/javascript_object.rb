@@ -54,14 +54,12 @@ class JavascriptObject
   alias to_json to_s
 
   protected
-    # Returns either the global script generator(if one is set) or this objects script generator.
+    # Returns either the Eschaton#global_script(if one is set) or this objects script generator.
     def script
       @script || Eschaton.global_script
     end
 
   private
-    cattr_accessor :global_script
-    
     # Sets the name of the local variable that respresents this object.
     # If :random is supplied as +name+, a random name is assigned to avoid conflicts.
     def var=(name)
