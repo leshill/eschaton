@@ -3,14 +3,15 @@ module ScriptStore # :nodoc:
   def define(*names)
     names.each do |name|
       self.send(:cattr_writer, name)
-
+      
+      thread_key = self.thread_key(name)
       class_eval "
         def self.#{name}
-          @@#{name} ||= ScriptExpander.new
+          expander = Thread.current['#{thread_key}'] ||= ScriptExpander.new
 
-          yield @@#{name} if block_given?
+          yield expander if block_given?
 
-          @@#{name}
+          expander
         end
       "
     end
@@ -18,7 +19,9 @@ module ScriptStore # :nodoc:
 
   def clear(*names)
     names.each do |name|
-      class_eval "@@#{name} = nil"
+      thread_key = self.thread_key(name)
+
+      Thread.current[thread_key] = nil
     end
   end
 
@@ -28,5 +31,10 @@ module ScriptStore # :nodoc:
 
     existing_value
   end
+  
+  protected
+    def thread_key(name)
+      "eschaton_#{self.to_s.downcase}_#{name}"
+    end
 
 end

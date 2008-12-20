@@ -32,10 +32,6 @@ class Eschaton # :nodoc:
     ActionView::Helpers::PrototypeHelper::JavaScriptGenerator.new(self.current_view){}
   end
 
-  def self.script_expander
-    ScriptExpander.new(self.current_view)
-  end
-
   def self.with_global_script(script = Eschaton.javascript_generator, options = {})
     options.default! :reset_after => false
 
