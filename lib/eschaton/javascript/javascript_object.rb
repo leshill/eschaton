@@ -56,7 +56,7 @@ class JavascriptObject
   protected
     # Returns either the global script generator(if one is set) or this objects script generator.
     def script
-      @script || JavascriptObject.global_script
+      @script || Eschaton.global_script
     end
 
   private

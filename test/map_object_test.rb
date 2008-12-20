@@ -6,13 +6,9 @@ class MapObjectTest < Test::Unit::TestCase
 
   def setup
     @script = Eschaton.javascript_generator
-    JavascriptObject.global_script = @script
+    Eschaton.global_script = @script
 
     @map_object = Google::MapObject.new(:var => 'test_object')
-  end
-
-  def teardown
-    JavascriptObject.global_script = nil
   end
   
   def test_listen_to_with

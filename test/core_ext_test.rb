@@ -1,14 +1,6 @@
 require File.dirname(__FILE__) + '/test_helper'
 
 class GoogleCoreExtTest < Test::Unit::TestCase
-
-  def setup
-    JavascriptObject.global_script = Eschaton.javascript_generator
-  end
-
-  def teardown
-    JavascriptObject.global_script = nil
-  end
   
   def test_array_to_google_size
     assert_equal "new GSize(10, 10)", [10, 10].to_google_size

@@ -52,6 +52,10 @@ class Eschaton # :nodoc:
     script
   end
 
+  def self.global_script=(script)
+    JavascriptObject.global_script = script
+  end
+
   # TODO - Add .global_script and remove JavascriptObject.global_script  
   def self.global_script
     global_script = JavascriptObject.global_script
@@ -61,6 +65,15 @@ class Eschaton # :nodoc:
     end
 
     global_script
+  end
+
+
+  def self.disabled?
+    Thread.current[:comment_observer_disabled]
+  end
+
+  def disabled=(value)
+    Thread.current[:comment_observer_disabled] = value
   end
 
 end

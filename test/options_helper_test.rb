@@ -3,13 +3,9 @@ require File.dirname(__FILE__) + '/test_helper'
 class OptionsHelperTest < Test::Unit::TestCase
 
   def setup
-    JavascriptObject.global_script = Eschaton.javascript_generator
+    Eschaton.global_script = Eschaton.javascript_generator
   end
 
-  def teardown
-    JavascriptObject.global_script = nil
-  end
-  
   def test_to_google_position
     assert_equal 'new GControlPosition(G_ANCHOR_TOP_LEFT, new GSize(0, 0))',
                  Google::OptionsHelper.to_google_position({:anchor => :top_left})
@@ -98,6 +94,18 @@ class OptionsHelperTest < Test::Unit::TestCase
 
     assert_equal '[{color: "red", levels: "PFHFGP", numLevels: 18, opacity: 0.7, points: "ihglFxjiuMkAeSzMkHbJxMqFfQaOoB", weight: 3, zoomFactor: 2}, {levels: "PDFDEP", numLevels: 18, points: "cbglFhciuMY{FtDqBfCvD{AbFgEm@", zoomFactor: 2}]',
                   Google::OptionsHelper.to_encoded_polylines(options)
+  end
+  
+  def test_to_content
+    assert_equal 'the mystic', Google::OptionsHelper.to_content(:text => 'the mystic')    
+    assert_equal 'test output for render', Google::OptionsHelper.to_content(:partial => 'testing')
+    
+    Eschaton.with_global_script do |script|  
+      assert_output_fixture 'var javascript = "location is " + location;',
+                            script.record_for_test {
+                              assert_equal :javascript, Google::OptionsHelper.to_content(:javascript => '"location is " + location')      
+                            }
+    end
   end
 
 end
