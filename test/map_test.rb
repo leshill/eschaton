@@ -159,18 +159,18 @@ class MapTest < Test::Unit::TestCase
                                map.addOverlay(marker);
                                track_bounds.extend(marker.getLatLng());",
                               script.record_for_test {
-                                map.add_marker :location => {:latitude => -33.947, :longitude => 18.462}
+                                map.add_marker :var => :marker, :location => {:latitude => -33.947, :longitude => 18.462}
                               }
 
-        assert_output_fixture "marker = new GMarker(new GLatLng(-33.947, 18.462), {draggable: false});
-                              map.addOverlay(marker);
-                              track_bounds.extend(marker.getLatLng());
-                              marker = new GMarker(new GLatLng(-34.947, 19.462), {draggable: false});
-                              map.addOverlay(marker);
-                              track_bounds.extend(marker.getLatLng());",
+        assert_output_fixture "marker_1 = new GMarker(new GLatLng(-33.947, 18.462), {draggable: false});
+                              map.addOverlay(marker_1);
+                              track_bounds.extend(marker_1.getLatLng());
+                              marker_2 = new GMarker(new GLatLng(-34.947, 19.462), {draggable: false});
+                              map.addOverlay(marker_2);
+                              track_bounds.extend(marker_2.getLatLng());",
                               script.record_for_test {
-                                map.add_markers({:location => {:latitude => -33.947, :longitude => 18.462}},
-                                                {:location => {:latitude => -34.947, :longitude => 19.462}})
+                                map.add_markers({:var => :marker_1, :location => {:latitude => -33.947, :longitude => 18.462}},
+                                                {:var => :marker_2, :location => {:latitude => -34.947, :longitude => 19.462}})
                               }
       end
     end
@@ -192,7 +192,7 @@ class MapTest < Test::Unit::TestCase
                              map.addOverlay(marker);
                              track_bounds.extend(marker.getLatLng());",
                             script.record_for_test {
-                              map.replace_marker :location => {:latitude => -33.947, :longitude => 18.462}
+                              map.replace_marker :var => :marker, :location => {:latitude => -33.947, :longitude => 18.462}
                             }
     end
   end
@@ -213,8 +213,9 @@ class MapTest < Test::Unit::TestCase
                              map.addOverlay(marker);
                              track_bounds.extend(marker.getLatLng());",
                             script.record_for_test {
-                              map.change_marker :create_spot,  
-                                                :location => {:latitude => -33.947, :longitude => 18.462}
+                              map.change_marker :create_spot,
+                                                {:var => :marker,
+                                                 :location => {:latitude => -33.947, :longitude => 18.462}}
                             }
     end
   end
@@ -390,8 +391,8 @@ class MapTest < Test::Unit::TestCase
       script.google_map_script do
         map = Google::Map.new :center => :best_fit
 
-        map.add_marker :location => {:latitude => -33.0, :longitude => 18.0}
-        map.add_marker :location => {:latitude => -33.5, :longitude => 18.5}      
+        map.add_marker :var => :marker, :location => {:latitude => -33.0, :longitude => 18.0}
+        map.add_marker :var => :marker, :location => {:latitude => -33.5, :longitude => 18.5}      
       end
       
       assert_output_fixture :map_best_fit_center, script      
@@ -403,8 +404,8 @@ class MapTest < Test::Unit::TestCase
       script.google_map_script do
         map = Google::Map.new :center => :best_fit, :zoom => :best_fit
 
-        map.add_marker :location => {:latitude => -33.0, :longitude => 18.0}
-        map.add_marker :location => {:latitude => -33.5, :longitude => 18.5}
+        map.add_marker :var => :marker, :location => {:latitude => -33.0, :longitude => 18.0}
+        map.add_marker :var => :marker, :location => {:latitude => -33.5, :longitude => 18.5}
       end
 
       assert_output_fixture :map_best_fit_center_and_zoom, script
