@@ -3,6 +3,9 @@ class MapGenerator < Rails::Generator::Base
   
   def manifest
     record do |m|
+      # Config file
+      m.file "eschaton_google_api_keys.yml", "config/eschaton_google_api_keys.yml"
+
       # Javascript
       m.file "jquery.js", "public/javascripts/jquery.js"
       m.file "eschaton.js", "public/javascripts/eschaton.js"      
@@ -13,7 +16,7 @@ class MapGenerator < Rails::Generator::Base
       m.directory "app/views/map"
       m.file "map.erb", "app/views/layouts/map.erb"
       m.file "index.erb", "app/views/map/index.erb"
-      
+
       # Marker icons
       m.file "blue.png", "public/images/blue.png"
       m.file "red.png", "public/images/red.png"

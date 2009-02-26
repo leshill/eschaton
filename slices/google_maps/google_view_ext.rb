@@ -17,16 +17,10 @@ module GoogleViewExt
   # to enable google maps functionality.
   #
   # ==== Options:
-  # * +key+ - Optional. The key[http://code.google.com/apis/maps/signup.html] that google maps supplied you with, defaulted to GOOGLE_MAPS_API_KEY if present or a key for +localhost+.
+  # * +key+ - Optional. See ApiKey.get or supply the key[http://code.google.com/apis/maps/signup.html] as an option.
   # * +include_jquery+ - Optional. Indicates if the jquery file should be included, defaulted to +true+, set this to +false+ if you have already included jQuery.
   def include_google_javascript(options = {})
-    key = if defined?(GOOGLE_MAPS_API_KEY)
-            GOOGLE_MAPS_API_KEY
-          else
-            'ABQIAAAActtI8WkgLZcM_n8uvnIYsBTJQa0g3IQ9GZqIMmInSLzwtGDKaBT9A95dZjICm7SeC_GoxpzGlyCdQA'
-          end
-    
-    options.default! :key => key, :include_jquery => true
+    options.default! :key => Google::ApiKey.get(:domain => request.domain), :include_jquery => true
 
     options.assert_valid_keys :key, :include_jquery
 
