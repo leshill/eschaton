@@ -78,7 +78,7 @@ module Google
     #
     # See addtional options[http://code.google.com/apis/maps/documentation/reference.html#GMarkerOptions] that are supported.
     def initialize(options = {})
-      options.default! :var => 'marker', :draggable => false
+      options.default! :draggable => false
 
       super
 
