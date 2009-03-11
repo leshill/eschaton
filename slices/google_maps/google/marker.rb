@@ -145,6 +145,10 @@ module Google
       info_window.cache_on_marker options
     end
 
+    def open_cached_info_window
+      self << "GEvent.trigger(#{self}, 'click');"
+    end
+
     # If called with a block it will attach the block to the "click" event of the marker.
     # If +info_window_options+ are supplied an info window will be opened with those options and the block will be ignored.
     #
