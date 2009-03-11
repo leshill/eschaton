@@ -114,12 +114,13 @@ class MarkerTest < Test::Unit::TestCase
    end    
   end
 
-
   def test_marker_open_info_window
     Eschaton.with_global_script do |script|
       marker = Google::Marker.new :var => :marker, :location => {:latitude => -33.947, :longitude => 18.462}
 
-      assert_output_fixture :marker_open_info_window_with_url,
+      assert_output_fixture "jQuery.get('/location/show/1?location%5Blatitude%5D=' + marker.getLatLng().lat() + '&location%5Blongitude%5D=' + marker.getLatLng().lng() + '', function(data) {
+                               marker.openInfoWindow(\"<div id='info_window_content'>\" + data + \"</div>\");
+                             });",
                             script.record_for_test {
                               marker.open_info_window :url => {:controller => :location, :action => :show, :id => 1}
                             }
@@ -135,6 +136,30 @@ class MarkerTest < Test::Unit::TestCase
                              }
     end
   end
+  
+  def test_marker_cache_info_window
+    Eschaton.with_global_script do |script|
+      marker = Google::Marker.new :var => :marker, :location => {:latitude => -33.947, :longitude => 18.462}
+
+      assert_output_fixture "jQuery.get('/location/show/1?location%5Blatitude%5D=' + marker.getLatLng().lat() + '&location%5Blongitude%5D=' + marker.getLatLng().lng() + '', function(data) {
+                               marker.bindInfoWindowHtml(\"<div id='info_window_content'>\" + data + \"</div>\");
+                             });",
+                            script.record_for_test {
+                              marker.cache_info_window :url => {:controller => :location, :action => :show, :id => 1}
+                            }
+
+      assert_output_fixture 'marker.bindInfoWindowHtml("<div id=\'info_window_content\'>" + "test output for render" + "</div>");', 
+                             script.record_for_test {
+                               marker.cache_info_window :partial => 'create'
+                             }
+
+      assert_output_fixture 'marker.bindInfoWindowHtml("<div id=\'info_window_content\'>" + "Testing text!" + "</div>");', 
+                             script.record_for_test {
+                               marker.cache_info_window :text => "Testing text!"
+                             }
+    end
+  end  
+  
 
   def test_click
     Eschaton.with_global_script do |script|

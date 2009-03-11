@@ -137,6 +137,13 @@ module Google
       info_window = InfoWindow.new(:object => self)
       info_window.open_on_marker options
     end
+    
+    # Supports all the same options as open_info_window. The info window is then cached so that every time the marker is 'clicked'
+    # it will open up the cached info window.
+    def cache_info_window(options)
+      info_window = InfoWindow.new(:object => self)
+      info_window.cache_on_marker options
+    end
 
     # If called with a block it will attach the block to the "click" event of the marker.
     # If +info_window_options+ are supplied an info window will be opened with those options and the block will be ignored.

@@ -3,6 +3,7 @@ module Google
   # Provides translation to the relevant Google mapping objects when working with method options.
   class OptionsHelper # :nodoc:
 
+    # TODO - Support URLS here
     def self.to_content(options)
       if options[:partial]
         Eschaton.current_view.render options

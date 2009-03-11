@@ -1,5 +1,5 @@
 module Google
-  
+   
   class InfoWindow < MapObject
     attr_reader :object
 
@@ -19,14 +19,13 @@ module Google
 
       if options[:url]
         options[:location] = location
-
+        
+        # TODO - the way the jquery get forces use to duplicate code sucks, make OptionsHelper.to_content support URLS
         get(options) do |data|
           open_info_window_on_map :location => location, :content => data
         end        
       else
-        text = Google::OptionsHelper.to_content options
-
-        open_info_window_on_map :location => location, :content => text
+        open_info_window_on_map :location => location, :content => OptionsHelper.to_content(options)
       end
     end
     
@@ -35,15 +34,29 @@ module Google
 
       if options[:url]
         options[:location] = self.object.location
-
+        
+        # TODO - the way the jquery get forces use to duplicate code sucks, make OptionsHelper.to_content support URLS
         get(options) do |data|
           open_info_window_on_marker :content => data
         end
       else
-        text = OptionsHelper.to_content options
-
-        open_info_window_on_marker :content => text
+        open_info_window_on_marker :content => OptionsHelper.to_content(options)
       end
+    end
+    
+    def cache_on_marker(options)
+      options.default! :include_location => true
+
+      if options[:url]
+        options[:location] = self.object.location
+
+        # TODO - the way the jquery get forces use to duplicate code sucks, make OptionsHelper.to_content support URLS
+        get(options) do |data|
+          cache_info_window_for_marker :content => data
+        end
+      else
+        cache_info_window_for_marker :content => OptionsHelper.to_content(options)
+      end      
     end
 
     private
@@ -59,6 +72,11 @@ module Google
       def open_info_window_on_marker(options)
         content = window_content options[:content]
         self << "#{self.var}.openInfoWindow(#{content});"
+      end
+
+      def cache_info_window_for_marker(options)
+        content = window_content options[:content]
+        self << "#{self.var}.bindInfoWindowHtml(#{content});"
       end
 
       def get(options)
