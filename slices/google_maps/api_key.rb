@@ -29,6 +29,10 @@ module Google
       self.key
     end
 
+    def self.reset! # :nodoc:
+      self.key = nil
+    end
+
   end
 
 end
