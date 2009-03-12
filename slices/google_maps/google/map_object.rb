@@ -1,7 +1,7 @@
 module Google
 
   # Provides a base for all google map objects. Handles map object events in a general manner with the use of listen_to.
-  class MapObject < JavascriptObject
+  class MapObject < Eschaton::JavascriptObject
 
     def initialize(options)
       super

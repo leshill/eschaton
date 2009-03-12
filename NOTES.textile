@@ -3,14 +3,8 @@ h2. N.B:
   * In some places the 'map' variable is directly referenced and will cause issues if there are two maps
     or a map with a name other than map. Suggest making the Google::Map avaible globally through some interface.
      
-  * Write "Eschaton showcase" to show all samples code and allow for some form of user contribution.  
-    
   * Track the "maps" that the user has created by keeping a hash by name, the main map being called "main".
     Other objects can then refer to these maps using the abstraction
-
-h2. In:
-
-  * Support yaml files for map keys, so in one place and no need to edit dev.rb or prod.rb
 
 h2. Intuitive Marker updates
 

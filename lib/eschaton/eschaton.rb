@@ -1,6 +1,13 @@
 # Provides access to global objects of interest.
-class Eschaton # :nodoc:
-  cattr_accessor :current_view
+module Eschaton # :nodoc:
+
+  def self.current_view=(view)
+    @@current_view = view
+  end
+
+  def self.current_view
+    @@current_view
+  end
 
   def self.dependencies
     if defined?(ActiveSupport::Dependencies)

@@ -34,7 +34,7 @@ class JavascriptObjectTest < Test::Unit::TestCase
 
   def test_method_to_js
     Eschaton.with_global_script do |script|
-      obj = JavascriptObject.new(:var => 'map')
+      obj = Eschaton::JavascriptObject.new(:var => 'map')
 
       obj.zoom = 12
       obj.set_zoom 12
@@ -51,7 +51,7 @@ class JavascriptObjectTest < Test::Unit::TestCase
   end
   
   def test_existing
-    obj = JavascriptObject.existing(:var => 'map')
+    obj = Eschaton::JavascriptObject.existing(:var => 'map')
 
     assert_equal 'map', obj.var
     assert_false obj.create_var
@@ -60,14 +60,14 @@ class JavascriptObjectTest < Test::Unit::TestCase
   
   def test_script
     script = Eschaton.javascript_generator
-    obj = JavascriptObject.existing(:var => 'map', :script => script)
+    obj = Eschaton::JavascriptObject.existing(:var => 'map', :script => script)
     
     assert script, obj.script
   end
   
   def test_add_to_script
     Eschaton.with_global_script do |script|
-      obj = JavascriptObject.new
+      obj = Eschaton::JavascriptObject.new
       
       obj << "var i = 1;"
       

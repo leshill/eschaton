@@ -8,6 +8,14 @@ class Object # :nodoc:
     end
   end
   
+  def true?
+    self == true
+  end
+
+  def false?
+    self == false
+  end
+
   def not_nil?
     !self.nil?
   end

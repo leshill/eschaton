@@ -54,7 +54,7 @@ end
 
 desc 'Clones an eschaton slice from a git repo'
 task :clone_slice do
-  SliceCloner.clone :repo => ENV['slice']
+  Eschaton::SliceCloner.clone :repo => ENV['slice']
 end
 
 def update_javascript
