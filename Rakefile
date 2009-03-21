@@ -39,6 +39,16 @@ Rake::RDocTask.new(:rdoc) do |rdoc|
   rdoc.rdoc_files.include("slices/*/**/*.rb")
 end
 
+desc 'Prepare docs for deployment to blog'
+task :prep_blog_docs => :rdoc do
+  `rm -rf blog_rdoc`
+  `mv rdoc blog_rdoc`
+end
+
+task :merge_blog_docs do
+  `mv blog_rdoc rdoc`
+end
+
 desc 'Opens documentation for the eschaton plugin.'
 task :open_doc do |rdoc|
   `open rdoc/index.html`
