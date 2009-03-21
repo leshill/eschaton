@@ -42,3 +42,5 @@ Generate and review the docs, put some test code in the <b><i>app/helpers/map_he
   $ cd vendor/plugins/eschaton/
   $ rake rdoc
   $ rake open_doc
+  
+You can also view the docs online[http://yawningman.github.com/eschaton/rdoc/]  
