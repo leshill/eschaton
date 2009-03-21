@@ -34,6 +34,7 @@ Rake::RDocTask.new(:rdoc) do |rdoc|
   rdoc.title    = 'eschaton'
   rdoc.options << '--line-numbers' << '--inline-source'
   rdoc.rdoc_files.include('README.rdoc')
+  rd.main = "README.rdoc"
 
   rdoc.rdoc_files.include('lib/**/*.rb')
   rdoc.rdoc_files.include("slices/*/**/*.rb")
