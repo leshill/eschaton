@@ -91,6 +91,7 @@ module Google # :nodoc:
     attr_reader :zoom, :type
     
     Control_types = [:small_map, :large_map, :small_zoom, 
+                     :large_map_3D, :small_zoom_3D,
                      :scale, 
                      :map_type, :menu_map_type, :hierarchical_map_type,
                      :overview_map]

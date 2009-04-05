@@ -12,7 +12,11 @@ class GoogleCoreExtTest < Test::Unit::TestCase
     assert_equal :GSmallMapControl, :small_map.to_google_control
     assert_equal :GScaleControl, :scale.to_google_control
     assert_equal :GMapTypeControl, :map_type.to_google_control
-    assert_equal :GOverviewMapControl, :overview_map.to_google_control  
+    assert_equal :GOverviewMapControl, :overview_map.to_google_control
+    
+    # 3D controls
+    assert_equal :GLargeMapControl3D, :large_map_3D.to_google_control
+    assert_equal :GSmallZoomControl3D, :small_zoom_3D.to_google_control
   end
   
   def test_to_map_type

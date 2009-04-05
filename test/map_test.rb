@@ -53,6 +53,16 @@ class MapTest < Test::Unit::TestCase
                                script.record_for_test {
                                  map.controls = :small_map, :map_type
                                }
+        # 3D controls                       
+        assert_output_fixture 'map.addControl(new GLargeMapControl3D());', 
+                               script.record_for_test {
+                                 map.add_control :large_map_3D
+                               }
+
+        assert_output_fixture 'map.addControl(new GSmallZoomControl3D());', 
+                               script.record_for_test {
+                                 map.add_control :small_zoom_3D
+                               }                               
       end
     end
   end

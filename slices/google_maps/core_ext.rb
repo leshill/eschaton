@@ -17,7 +17,14 @@ end
 class Symbol # :nodoc:
   
   def to_google_control
-    "G#{self.to_s.classify}Control".to_sym
+    control_class = "G#{self.to_s.classify}"
+    control = if /3D$/ =~ control_class # Support for 3D controls
+                "#{control_class.gsub('3D', '')}Control3D"
+              else
+                "#{control_class}Control"
+              end
+
+    control.to_sym              
   end
 
   def to_map_type
