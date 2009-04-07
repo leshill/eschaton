@@ -12,7 +12,7 @@ class MapTest < Test::Unit::TestCase
 
     assert_output_fixture :map_with_center, 
                           Eschaton.with_global_script{
-                            map = Google::Map.new :center => {:latitude => -35.0, :longitude => 19.0}                            
+                            map = Google::Map.new :center => {:latitude => -35.0, :longitude => 19.0}
                           }
     
     assert_output_fixture :map_with_args,

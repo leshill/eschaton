@@ -55,5 +55,47 @@ module GoogleGeneratorExt
       end
     end
   end
-   
+  
+  # Sets latitude and longitude values of the +location+ option in html input elements.
+  # Used to update form fields with a location on the map such as click location or the location of a marker.
+  #
+  # ==== Options
+  # * +location+ - Required. The location whos latitude and logitude will be used.
+  # * +latitude_element+ - Optional. The id of the element whos value will be set to the latitude of the +location+ option. Defaulted to id of +latitude+.
+  # * +longitude_element+ - Optional. The id of the element whos value will be set to the longitude of the +location+ option. Defaulted to id of +longitude+.
+  #
+  # ==== Examples:
+  #
+  # Say we wanted to set the click location of the map to html input elements:
+  #
+  #  # The two elements
+  #  <input type="text" name="latitude" value="" id="latitude">
+  #  <input type="text" name="longitude" value="" id="longitude">
+  #
+  #  # The code
+  #  map.click do |script, location|
+  #    script.set_coordinate_elements :location => location
+  #  end
+  #
+  # Or, set the values of specific elements using a markers location
+  #
+  #  # The two elements
+  #  <input type="text" name="location[latitude]" value="" id="location_latitude">
+  #  <input type="text" name="location[latitude]" value="" id="location_longitude">
+  #
+  #  # The code 
+  #  marker = map.add_marker ...
+  #  map.click do |script, location|
+  #    script.set_coordinate_elements :location => marker.location,
+  #                                   :latitude_element => :location_latitude
+  #                                   :longitude_element => :location_longitude                                      
+  #  end
+  def set_coordinate_elements(options = {})
+    options.default! :latitude_element => :latitude, :longitude_element => :longitude
+    location = options[:location]
+    
+    self << "$('#{options[:latitude_element]}').value = #{location}.lat();"
+    self << "$('#{options[:longitude_element]}').value = #{location}.lng();"
+  end  
+
 end

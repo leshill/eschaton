@@ -80,5 +80,44 @@ class GoogleGeneratorExtTest < Test::Unit::TestCase
       
     end
   end
+  
+  def test_set_coordinate_elements
+    Eschaton.with_global_script do |script|
+      
+      assert_output_fixture "$('latitude').value = location.lat();
+                             $('longitude').value = location.lng();", 
+                            script.record_for_test {
+                              script.set_coordinate_elements :location => :location
+                            }
+      
+      map = Google::Map.new :center => {:latitude => -35.0, :longitude => 19.0}
+      
+      # Testing with map center    
+      assert_output_fixture "$('latitude').value = map.getCenter().lat();
+                             $('longitude').value = map.getCenter().lng();", 
+                            script.record_for_test {
+                              script.set_coordinate_elements :location => map.center
+                            }
+
+      marker = map.add_marker(:var => :marker, :location => map.center)
+      
+      # Testing with a marker location
+      assert_output_fixture "$('latitude').value = marker.getLatLng().lat();
+                             $('longitude').value = marker.getLatLng().lng();", 
+                            script.record_for_test {
+                              script.set_coordinate_elements :location => marker.location
+                            }
+
+      # With specific element names
+      assert_output_fixture "$('location_latitude').value = location.lat();
+                             $('location_longitude').value = location.lng();", 
+                            script.record_for_test {
+                              script.set_coordinate_elements :location => :location,
+                                                             :latitude_element => :location_latitude,
+                                                             :longitude_element => :location_longitude
+                            }
+    end    
+    
+  end
 
 end
