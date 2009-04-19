@@ -165,23 +165,33 @@ module Google # :nodoc:
 
       if location == :best_fit
         self.center = self.default_center
-        Google::Scripts.end_of_map_script << "if(!track_bounds.isEmpty()){
-                                                #{self}.setCenter(track_bounds.getCenter()); 
-                                              }".strip_each_line!
+        Google::Scripts.end_of_map_script do
+          self.auto_center!          
+        end
       else
         self.set_center location
       end
+    end
+
+    # Automatically centers the map to the appropriate location based on all overlays added to the map.
+    # In order to be effective this *must* be called after you have added all your overlays to the map.
+    #
+    # ==== Examples:
+    #
+    #  map.add_marker :location => {:latitude => -34.947, :longitude => 18.462}
+    #  map.add_marker :location => {:latitude => -70.947, :longitude => 19.462}
+    #
+    #  map.auto_center!
+    def auto_center!
+      self << "if(!track_bounds.isEmpty()){
+                 #{self}.setCenter(track_bounds.getCenter());
+              }"
     end
 
     def center
       "#{self}.getCenter()"
     end
     
-    # The last location of the mouse. If the mouse has not moved the map center will be used.
-    def last_mouse_location
-      :last_mouse_location
-    end
-
     # Sets the zoom level of the map, +zoom+ can be a number(1 - 22) or <tt>:best_fit</tt>. If set to <tt>:best_fit</tt> 
     # google maps will determine an appropriate zoom level.
     #
@@ -193,10 +203,44 @@ module Google # :nodoc:
       @zoom = zoom
 
       if zoom == :best_fit
-        Google::Scripts.end_of_map_script << "#{self}.setZoom(#{self}.getBoundsZoomLevel(track_bounds));"
+        Google::Scripts.end_of_map_script do
+          self.auto_zoom!
+        end
       else
         self.set_zoom(self.zoom)        
       end
+    end
+    
+    # Automatically zooms the map to the appropriate level based on all overlays added to the map.
+    # In order to be effective this *must* be called after you have added all your overlays to the map.
+    #
+    # ==== Examples:
+    #
+    #  map.add_marker :location => {:latitude => -34.947, :longitude => 18.462}
+    #  map.add_marker :location => {:latitude => -70.947, :longitude => 19.462}
+    #
+    #  map.auto_zoom!
+    def auto_zoom!
+      self << "#{self}.setZoom(#{self}.getBoundsZoomLevel(track_bounds));"
+    end
+    
+    # Automatically zooms the map to the appropriate level and centers the map to the appropriate location based on all overlays added to the map.
+    # In order to be effective this *must* be called after you have added all your overlays to the map.
+    #
+    # ==== Examples:
+    #
+    #  map.add_marker :location => {:latitude => -34.947, :longitude => 18.462}
+    #  map.add_marker :location => {:latitude => -70.947, :longitude => 19.462}
+    #
+    #  map.auto_fit!
+    def auto_fit!
+      self.auto_zoom!      
+      self.auto_center!
+    end
+
+    # The last location of the mouse. If the mouse has not moved the map center will be used.
+    def last_mouse_location
+      :last_mouse_location
     end
 
     # Adds the +control+ to the map, see Control_types of valid controls.

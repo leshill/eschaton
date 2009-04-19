@@ -397,6 +397,8 @@ class MapTest < Test::Unit::TestCase
   end
   
   def test_best_fit_center
+    Google::Scripts.clear_events!
+
     Eschaton.with_global_script do |script|
       script.google_map_script do
         map = Google::Map.new :center => :best_fit
@@ -410,6 +412,8 @@ class MapTest < Test::Unit::TestCase
   end
 
   def test_best_fit_center_and_zoom
+    Google::Scripts.clear_events!
+        
     Eschaton.with_global_script do |script|
       script.google_map_script do
         map = Google::Map.new :center => :best_fit, :zoom => :best_fit
@@ -419,6 +423,44 @@ class MapTest < Test::Unit::TestCase
       end
 
       assert_output_fixture :map_best_fit_center_and_zoom, script
+    end
+  end
+
+  def test_auto_zoom
+    Eschaton.with_global_script do |script|
+      map = Google::Map.new :center => {:latitude => -33.947, :longitude => 18.462}
+            
+      assert_output_fixture 'map.setZoom(map.getBoundsZoomLevel(track_bounds));', 
+                            script.record_for_test {
+                              map.auto_zoom!
+                            }      
+    end
+  end
+
+  def test_auto_center
+    Eschaton.with_global_script do |script|
+      map = Google::Map.new :center => {:latitude => -33.947, :longitude => 18.462}
+            
+      assert_output_fixture 'if(!track_bounds.isEmpty()){
+                               map.setCenter(track_bounds.getCenter());
+                            }', 
+                            script.record_for_test {
+                              map.auto_center!
+                            }      
+    end
+  end
+
+  def test_auto_fit
+    Eschaton.with_global_script do |script|
+      map = Google::Map.new :center => {:latitude => -33.947, :longitude => 18.462}
+            
+      assert_output_fixture 'map.setZoom(map.getBoundsZoomLevel(track_bounds));
+                             if(!track_bounds.isEmpty()){
+                               map.setCenter(track_bounds.getCenter());
+                             }', 
+                            script.record_for_test {
+                              map.auto_fit!
+                            }      
     end
   end
 

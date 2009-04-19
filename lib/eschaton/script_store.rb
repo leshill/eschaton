@@ -10,9 +10,13 @@ module Eschaton
         class_eval "
           def self.#{name}
             expander = Thread.current['#{thread_key}'] ||= ScriptExpander.new
-
-            yield expander if block_given?
-
+            
+            if block_given?
+              Eschaton.with_global_script(expander) do
+                yield expander
+              end
+            end
+            
             expander
           end
         "
