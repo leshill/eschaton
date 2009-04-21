@@ -24,6 +24,14 @@ module Google
       end
     end
     
+    def self.to_ground_overlay(options)
+      if options.is_a?(Google::GroundOverlay)
+        options
+      else
+        Google::GroundOverlay.new options
+      end
+    end
+    
     def self.to_circle(options)
       if options.is_a?(Google::Circle)
         options

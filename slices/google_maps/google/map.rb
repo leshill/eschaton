@@ -407,7 +407,25 @@ module Google # :nodoc:
       self.remove_overlay polygon
       polygon.removed_from_map self      
     end
-
+    
+    # Adds a +ground_overlay+ to the map which can be a GroundOverlay or whatever GroundOverlay#new supports.
+    def add_ground_overlay(options)
+      ground_overlay = Google::OptionsHelper.to_ground_overlay(options)
+      
+      self.add_overlay ground_overlay
+      
+      self.extend_track_bounds ground_overlay.vertices
+      
+      ground_overlay
+    end
+    
+    # Removes a +ground_overlay+ from the map.
+    def remove_polygon(options)
+      ground_overlay = Google::OptionsHelper.ground_overlay(options)
+      
+      self.remove_overlay ground_overlay
+    end
+    
     # Adds a +circle+ to the map which can be a Circle or whatever Circle#new supports.    
     def add_circle(options)
       circle = OptionsHelper.to_circle(options)
