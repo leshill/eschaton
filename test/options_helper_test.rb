@@ -43,7 +43,7 @@ class OptionsHelperTest < Test::Unit::TestCase
     location_hash = {:latitide => 34, :longitude => 18}
     location = Google::OptionsHelper.to_location(location_hash)
 
-    assert_equal Google::Location, location.class
+    assert location.is_a?(Google::Location)
     assert_equal location_hash[:latitude], location.latitude
     assert_equal location_hash[:longitude], location.longitude
 
@@ -97,7 +97,7 @@ class OptionsHelperTest < Test::Unit::TestCase
   end
   
   def test_to_content
-    assert_equal 'the mystic', Google::OptionsHelper.to_content(:text => 'the mystic')    
+    assert_equal 'the mystic', Google::OptionsHelper.to_content(:text => 'the mystic')
     assert_equal 'test output for render', Google::OptionsHelper.to_content(:partial => 'testing')
     
     Eschaton.with_global_script do |script|  
@@ -106,6 +106,61 @@ class OptionsHelperTest < Test::Unit::TestCase
                               assert_equal :javascript, Google::OptionsHelper.to_content(:javascript => '"location is " + location')      
                             }
     end
+  end
+
+  def test_to_bounds
+    south_west_point_latitude, south_west_point_longitude = -34.947, 19.462
+    north_east_point_latitude, north_east_point_longitude = -35.947, 20.462
+        
+    bounds = Google::Bounds.new(:south_west_point => [south_west_point_latitude, south_west_point_longitude], 
+                                :north_east_point => [north_east_point_latitude, north_east_point_longitude])
+
+    assert_equal bounds, Google::OptionsHelper.to_bounds(bounds)
+    assert_equal south_west_point_latitude, bounds.south_west_point.latitude
+    assert_equal south_west_point_longitude, bounds.south_west_point.longitude
+    assert_equal north_east_point_latitude, bounds.north_east_point.latitude
+    assert_equal north_east_point_longitude, bounds.north_east_point.longitude
+
+    bounds_from_hash = Google::OptionsHelper.to_bounds(:south_west_point => [south_west_point_latitude, south_west_point_longitude], 
+                                                       :north_east_point => [north_east_point_latitude, north_east_point_longitude])
+    assert bounds_from_hash.is_a?(Google::Bounds)
+    assert_equal south_west_point_latitude, bounds_from_hash.south_west_point.latitude
+    assert_equal south_west_point_longitude, bounds_from_hash.south_west_point.longitude
+    assert_equal north_east_point_latitude, bounds_from_hash.north_east_point.latitude
+    assert_equal north_east_point_longitude, bounds_from_hash.north_east_point.longitude
+    
+    bounds_from_array = Google::OptionsHelper.to_bounds([[south_west_point_latitude, south_west_point_longitude], 
+                                                         [north_east_point_latitude, north_east_point_longitude]])
+    assert bounds_from_hash.is_a?(Google::Bounds)
+    assert_equal south_west_point_latitude, bounds_from_array.south_west_point.latitude
+    assert_equal south_west_point_longitude, bounds_from_array.south_west_point.longitude
+    assert_equal north_east_point_latitude, bounds_from_array.north_east_point.latitude
+    assert_equal north_east_point_longitude, bounds_from_array.north_east_point.longitude                                                      
+  end
+  
+  def test_to_ground_overlay
+    image = 'http://battlestar/images/cylon_base_star.png'
+    south_west_point_latitude, south_west_point_longitude = -34.947, 19.462
+    north_east_point_latitude, north_east_point_longitude = -35.947, 20.462
+    
+    ground_overlay = Google::GroundOverlay.new(:image => image,
+                                               :south_west_point => [south_west_point_latitude, south_west_point_longitude], 
+                                               :north_east_point => [north_east_point_latitude, north_east_point_longitude])
+                                                             
+    assert_equal ground_overlay, Google::OptionsHelper.to_ground_overlay(ground_overlay)
+    
+    ground_overlay_from_hash = Google::OptionsHelper.to_ground_overlay(:image => image,
+                                                                       :south_west_point => [south_west_point_latitude, 
+                                                                                             south_west_point_longitude], 
+                                                                       :north_east_point => [north_east_point_latitude, 
+                                                                                             north_east_point_longitude])
+    
+    assert ground_overlay_from_hash.is_a?(Google::GroundOverlay)
+    assert_equal 'http://battlestar/images/cylon_base_star.png', ground_overlay_from_hash.image
+    assert_equal south_west_point_latitude, ground_overlay_from_hash.bounds.south_west_point.latitude
+    assert_equal south_west_point_longitude, ground_overlay_from_hash.bounds.south_west_point.longitude
+    assert_equal north_east_point_latitude, ground_overlay_from_hash.bounds.north_east_point.latitude
+    assert_equal north_east_point_longitude, ground_overlay_from_hash.bounds.north_east_point.longitude
   end
 
 end

@@ -1,34 +1,67 @@
-                       .__            __                 
-    ____   ______ ____ |  |__ _____ _/  |_  ____   ____  
-  _/ __ \ /  ___// ___\|  |  \\__  \\   __\/  _ \ /    \ 
-  \  ___/ \___ \\  \___|   Y  \/ __ \|  | (  <_> )   |  \
-   \___  >____  >\___  >___|  (____  /__|  \____/|___|  /
-       \/     \/     \/     \/     \/ eschaton | cusp \/
-     
-== eschaton => google maps on rails with hotness
+== eschaton => google maps on rails for bipeds(and also ungulates)
 
-Helps with writing google map mashups in Rails bringing together the power of Google Maps and Rails.
+Helps with writing google map mashups in Rails bringing together the Bodacity(measure of bodaciousness) of 
+Google Maps and Rails. If you have an issue please feed-it-back on Github issues[http://github.com/yawningman/eschaton/issues]
 
-Visit the wiki[http://github.com/yawningman/eschaton/wikis] for more info.
+Enough talk, lets code!
+
+  #-----------------------------------------------------------------#
 
   map = Google::Map.new(:center => {:latitude => -33.947, :longitude => 18.462},
-                        :controls => [:small_map, :map_type])
-
+                        :controls => [:large_map_3D, :map_type])
+  
+  # A simple map click
   map.click do |script, location|
     marker = map.add_marker :location => location
     marker.open_info_window :text => 'Awesome, you added a marker!'
   end
+  
+  #-----------------------------------------------------------------#
+  
+  # Create a satellite map, zoomed at 16.
+  map = Google::Map.new(:controls => [:small_map, :map_type],
+                        :type => :satellite, :zoom => 16)
+
+  # Collect some markers 
+  markers = [[-34.2023, 18.3794], [-34.2029, 18.3797], [-34.2022, 18.3811], 
+             [-34.2016, 18.3829], [-34.2006, 18.3849]].collect do |location|
+               map.add_marker :location => location
+            end
+
+  # ... and draw a line in between them
+  map.add_line :between_markers => markers, :tooltip => {:text => "Short Hike I do everyday with my dog"}
+
+  #-----------------------------------------------------------------#
+  
+  # Draw a polygon, yellow with a green border ..
+  map.add_polygon :vertices => [[-34.2023, 18.3794], [-34.2029, 18.3797], [-34.2022, 18.3811]], 
+                  :fill_colour => 'yellow', :border_colour => 'green'  
+
+  #-----------------------------------------------------------------#
+  
+  # A draggable marker that talks when its being dragged and dropped
+  marker = map.add_marker :location => {:latitude => -33.947, :longitude => 18.462},
+                          :tooltip => {:text => "Drag me", :show => :always},
+                          :draggable => true
+
+  marker.when_being_dragged do
+    marker.update_tooltip :text => "Dragging..."
+  end
+
+  marker.when_dropped do |script, drop_location|
+    marker.update_tooltip :text => "Dropped..."
+    marker.open_info_window :text => "Yes, I was getting tired of flying..."
+  end
+
+and always remember...
+
+  {:latitude => -33.947, :longitude => 18.462} == [-33.947, 18.462]
+
+Checkout the online[http://yawningman.github.com/eschaton/rdoc/] docs for more general samples.
 
 == Get it...
 
-For Rails 2.1 and up
-
   $ script/plugin install git://github.com/yawningman/eschaton.git
-
-Older versions of Rails
-
-  $ cd vendor/plugins
-  $ git clone git://github.com/yawningman/eschaton.git
 
 == Get going...
 
@@ -42,5 +75,3 @@ Generate and review the docs, put some test code in the <b><i>app/helpers/map_he
   $ cd vendor/plugins/eschaton/
   $ rake rdoc
   $ rake open_doc
-  
-You can also view the docs online[http://yawningman.github.com/eschaton/rdoc/]  

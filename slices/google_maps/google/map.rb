@@ -414,7 +414,9 @@ module Google # :nodoc:
       
       self.add_overlay ground_overlay
       
-      self.extend_track_bounds ground_overlay.vertices
+      # TODO - Standardise extending bounds with another Bound
+      self.extend_track_bounds ground_overlay.bounds.south_west_point
+      self.extend_track_bounds ground_overlay.bounds.north_east_point
       
       ground_overlay
     end

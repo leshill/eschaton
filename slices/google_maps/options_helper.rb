@@ -60,6 +60,16 @@ module Google
       end
     end
     
+    def self.to_bounds(options)
+      if options.is_a?(Google::Bounds)
+        options
+      elsif options.is_a?(Array)
+        Google::Bounds.new :south_west_point => options.first, :north_east_point => options.second
+      elsif options.is_a?(Hash)
+        Google::Bounds.new options
+      end
+    end
+    
     # ==== Options:
     # * +existing+ - Optional. Indicates if the marker is an existing marker.
     def self.to_marker(options)

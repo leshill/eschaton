@@ -14,6 +14,7 @@ module Google
       "new GLatLng(#{self.latitude}, #{self.longitude})"
     end
     
+    # TODO - Alias this somehow
     alias to_js to_s
     def to_json(options = nil)
       to_js
