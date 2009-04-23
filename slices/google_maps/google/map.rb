@@ -422,7 +422,7 @@ module Google # :nodoc:
     end
     
     # Removes a +ground_overlay+ from the map.
-    def remove_polygon(options)
+    def remove_ground_overlay(options)
       ground_overlay = Google::OptionsHelper.ground_overlay(options)
       
       self.remove_overlay ground_overlay
