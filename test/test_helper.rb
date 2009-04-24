@@ -59,7 +59,7 @@ class Test::Unit::TestCase
 
   def assert_error(message, exception_class = RuntimeError, &block)
     exception = assert_raise exception_class, &block
-    assert_equal(exception.message, message) unless exception.nil? || message.blank?
+    assert_equal(message, exception.message) unless exception.nil? || message.blank?
   end
 
   # Used to run something once
