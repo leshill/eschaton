@@ -280,7 +280,7 @@ class MapTest < Test::Unit::TestCase
       
       assert_output_fixture :map_add_line_with_vertex, 
                             script.record_for_test {
-                              map.add_line :vertices => {:latitude => -33.947, :longitude => 18.462}
+                              line = map.add_line :vertices => {:latitude => -33.947, :longitude => 18.462}
                             }
                             
       assert_output_fixture :map_add_line_with_vertices, 
@@ -471,7 +471,8 @@ class MapTest < Test::Unit::TestCase
   def test_add_ground_overlay
     Eschaton.with_global_script do |script|
       map = self.default_test_map
-      output = "ground_overlay = new GGroundOverlay('http://battlestar/images/cylon_base_star.png', new GLatLngBounds(new GLatLng(-33.947, 18.462), new GLatLng(-34.947, 19.462)));
+      output = "bounds = new GLatLngBounds(new GLatLng(-33.947, 18.462), new GLatLng(-34.947, 19.462));
+                ground_overlay = new GGroundOverlay('http://battlestar/images/cylon_base_star.png', bounds);
                 map.addOverlay(ground_overlay);
                 track_bounds.extend(new GLatLng(-33.947, 18.462));
                 track_bounds.extend(new GLatLng(-34.947, 19.462));"

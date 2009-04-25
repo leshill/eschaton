@@ -28,14 +28,14 @@ module Google::Tooltipable
     @tooltip = Google::Tooltip.new(options)
   end
 
-  # Updates the tooltip with the given +options+. See Google::Tooltip#update_html for valid options.
+  # Updates the tooltip with the given +options+. See Google::Tooltip#update for valid options.
   #
   # ==== Examples:
   #  marker.update_tooltip :text => "Updated tooltip!"
   #
   #  marker.update_tooltip :partial => 'spot_information'
   def update_tooltip(options)
-    self.tooltip.update_html options
+    self.tooltip.update options
   end
 
   def add_tooltip_to_map(map) # :nodoc:

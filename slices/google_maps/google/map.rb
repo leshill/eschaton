@@ -88,14 +88,13 @@ module Google # :nodoc:
   #
   #  map.add_line :between_markers => markers, :colour => 'red', :thickness => 10  
   class Map < MapObject
-    attr_reader :zoom, :type
+    attr_reader :zoom, :type, :bounds
     
     Control_types = [:small_map, :large_map, :small_zoom, 
                      :large_map_3D, :small_zoom_3D,
                      :scale, 
                      :map_type, :menu_map_type, :hierarchical_map_type,
                      :overview_map]
-    Map_types = [:normal, :satellite, :hybrid]
 
     # ==== Options: 
     # * +center+ - Optional. Centers the map at this location defaulted to <tt>:best_fit</tt>, see center= for valid options.
@@ -130,17 +129,21 @@ module Google # :nodoc:
       end
     end
 
-    # Sets the type of map to display, see Map_types of valid map types.
+    # Sets the type of map to display. See the map type contants[http://code.google.com/apis/maps/documentation/reference.html#GMapType]
+    # section of google online docs for supported map types.
     #
     # ==== Examples:
     #  map.type = :satellite
     #  map.type = :hybrid
+    #  map.type = :physical
+    #  map.type = :sky_visible
     def type=(value)
       @type = value
       self << "#{self.var}.setMapType(#{value.to_map_type});"
     end
     
-    # Removes map +types+ from the map, see Map_types of valid map types.
+    # Removes map +types+ from the map. See the map type contants[http://code.google.com/apis/maps/documentation/reference.html#GMapType]
+    # section of google online docs for supported map types.    
     #
     # ==== Examples:
     #   map.remove_type :satellite
@@ -183,8 +186,8 @@ module Google # :nodoc:
     #
     #  map.auto_center!
     def auto_center!
-      self << "if(!track_bounds.isEmpty()){
-                 #{self}.setCenter(track_bounds.getCenter());
+      self << "if(!#{self.bounds}.isEmpty()){
+                 #{self}.setCenter(#{self.bounds.center});
               }"
     end
 
@@ -207,7 +210,7 @@ module Google # :nodoc:
           self.auto_zoom!
         end
       else
-        self.set_zoom(self.zoom)        
+        self.set_zoom(self.zoom)    
       end
     end
     
@@ -221,7 +224,7 @@ module Google # :nodoc:
     #
     #  map.auto_zoom!
     def auto_zoom!
-      self << "#{self}.setZoom(#{self}.getBoundsZoomLevel(track_bounds));"
+      self << "#{self}.setZoom(#{self}.getBoundsZoomLevel(#{self.bounds}));"
     end
     
     # Automatically zooms the map to the appropriate level and centers the map to the appropriate location based on all overlays added to the map.
@@ -316,7 +319,7 @@ module Google # :nodoc:
       self.add_overlay marker
       marker.added_to_map self
 
-      self.extend_track_bounds marker.location
+      self.bounds.extend marker.location
 
       marker      
     end
@@ -365,7 +368,7 @@ module Google # :nodoc:
       self << "map_lines.push(#{line});"      
       
       unless line.encoded?
-        self.extend_track_bounds line.vertices
+        self.bounds.extend *line.vertices 
       end
 
       line
@@ -394,7 +397,7 @@ module Google # :nodoc:
       polygon.added_to_map self
       
       unless polygon.encoded?
-        self.extend_track_bounds polygon.vertices
+        self.bounds.extend polygon.vertices
       end
       
       polygon
@@ -411,13 +414,11 @@ module Google # :nodoc:
     # Adds a +ground_overlay+ to the map which can be a GroundOverlay or whatever GroundOverlay#new supports.
     def add_ground_overlay(options)
       ground_overlay = Google::OptionsHelper.to_ground_overlay(options)
-      
+
       self.add_overlay ground_overlay
-      
-      # TODO - Standardise extending bounds with another Bound
-      self.extend_track_bounds ground_overlay.bounds.south_west_point
-      self.extend_track_bounds ground_overlay.bounds.north_east_point
-      
+
+      self.bounds.extend ground_overlay.bounds
+
       ground_overlay
     end
     
@@ -553,28 +554,20 @@ module Google # :nodoc:
       self << "#{self.var}.showMapBlowup(#{location}, #{options.to_google_options});" 
     end
 
-    # Extends the tracking bounds of the map, locations added here will effect +center+ and +zoom+
-    # if these are in +best_fit+ mode.
-    # 
-    # Marker and Line objects are automatically tracked when using add_marker and add_line.
-    def extend_track_bounds(*locations)
-      locations.flatten.each do |location|
-        self << "track_bounds.extend(#{location});"
-      end
-    end
-
     # The default center for the map which is Mzanzi.
     def default_center # :nodoc:
       {:latitude => -33.947, :longitude => 18.462}
     end
     
     protected
+      attr_writer :bounds
+      
       def enable_keyboard_navigation! # :nodoc:
         self << "new GKeyboardHandler(#{self})"  
       end
 
       def track_bounds! # :nodoc:
-        self << "track_bounds = new GLatLngBounds();"
+        self.bounds = Google::Bounds.new(:var => :track_bounds)
       end        
 
       def track_last_mouse_location! # :nodoc:

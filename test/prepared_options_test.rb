@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/test_helper'
 
-class MethodOptionsTest < Test::Unit::TestCase
+class PreparedOptionsTest < Test::Unit::TestCase
 
   def setup
     @name_value, @project_value = "yawningman", "eschaton"

@@ -5,8 +5,6 @@ Google Maps and Rails. If you have an issue please feed-it-back on Github issues
 
 Enough talk, lets code!
 
-  #-----------------------------------------------------------------#
-
   map = Google::Map.new(:center => {:latitude => -33.947, :longitude => 18.462},
                         :controls => [:large_map_3D, :map_type])
   
@@ -15,9 +13,9 @@ Enough talk, lets code!
     marker = map.add_marker :location => location
     marker.open_info_window :text => 'Awesome, you added a marker!'
   end
-  
-  #-----------------------------------------------------------------#
-  
+
+...
+
   # Create a satellite map, zoomed at 16.
   map = Google::Map.new(:controls => [:small_map, :map_type],
                         :type => :satellite, :zoom => 16)
@@ -31,13 +29,13 @@ Enough talk, lets code!
   # ... and draw a line in between them
   map.add_line :between_markers => markers, :tooltip => {:text => "Short Hike I do everyday with my dog"}
 
-  #-----------------------------------------------------------------#
+...
   
   # Draw a polygon, yellow with a green border ..
   map.add_polygon :vertices => [[-34.2023, 18.3794], [-34.2029, 18.3797], [-34.2022, 18.3811]], 
                   :fill_colour => 'yellow', :border_colour => 'green'  
 
-  #-----------------------------------------------------------------#
+...
   
   # A draggable marker that talks when its being dragged and dropped
   marker = map.add_marker :location => {:latitude => -33.947, :longitude => 18.462},
@@ -53,7 +51,7 @@ Enough talk, lets code!
     marker.open_info_window :text => "Yes, I was getting tired of flying..."
   end
 
-and always remember...
+and remember that
 
   {:latitude => -33.947, :longitude => 18.462} == [-33.947, 18.462]
 

@@ -1,5 +1,5 @@
 module Google
-  
+
   # Provides a tooltip that can be applied to any object that includes Google::Tooltipable.
   class Tooltip < MapObject
     attr_reader :show, :on
@@ -35,13 +35,13 @@ module Google
       end
     end
 
-    # Updates the tooltip with the given +options+. Either +text+ or +partial+ is used as the html for the tooltip.
+    # Updates the tooltip with the given +options+. Either +text+ or +partial+ is used.
     #
     # ==== Options:
     # * +text+ - Optional. The text to display in the tooltip.
     # * +partial+ - Optional. Supports the same form as rails +render+ for partials, content of the rendered partial will be
     #   displayed in the tooltip.    
-    def update_html(options)
+    def update(options)
       content = OptionsHelper.to_content(options)
       self << "#{self}.updateHtml(#{content.to_js});"
     end
@@ -52,12 +52,10 @@ module Google
 
     def added_to_map(map) # :nodoc:
       map.add_overlay self
-      
-      if self.show == :always
-        self.show!
-      end
+
+      self.show! if self.show == :always
     end
 
   end
-  
+
 end
