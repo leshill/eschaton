@@ -89,22 +89,18 @@ module Google # :nodoc:
   #  map.add_line :between_markers => markers, :colour => 'red', :thickness => 10  
   class Map < MapObject
     attr_reader :zoom, :type, :bounds
-    
-    Control_types = [:small_map, :large_map, :small_zoom, 
-                     :large_map_3D, :small_zoom_3D,
-                     :scale, 
-                     :map_type, :menu_map_type, :hierarchical_map_type,
-                     :overview_map]
 
     # ==== Options: 
     # * +center+ - Optional. Centers the map at this location defaulted to <tt>:best_fit</tt>, see center= for valid options.
-    # * +controls+ - Optional. Which controls will be added to the map, see Control_types for valid controls.
+    # * +controls+ - Optional. Which controls will be added to the map, see controls= for details, defaulted to [:large_map_3D, :map_type]
     # * +zoom+ - Optional. The zoom level of the map defaulted to <tt>:best_fit</tt>, see zoom=.
     # * +type+ - Optional. The type of map, see type=.
-    # * +keyboard_navigation+ - Optional. Indicates if 
+    # * +keyboard_navigation+ - Optional. Indicates if
     #   {keyboad navigation}[http://code.google.com/apis/maps/documentation/reference.html#GKeyboardHandler] should be enabled, defaulted to +false+.
     def initialize(options = {})
-      options.default! :var => 'map', :center => :best_fit, :zoom => :best_fit,
+      options.default! :var => 'map', :center => :best_fit, 
+                       :controls => [:large_map_3D, :map_type],
+                       :zoom => :best_fit,
                        :keyboard_navigation => false
 
       super
@@ -129,17 +125,18 @@ module Google # :nodoc:
       end
     end
 
-    # Sets the type of map to display. See the map type contants[http://code.google.com/apis/maps/documentation/reference.html#GMapType]
-    # section of google online docs for supported map types.
+    # Sets the type of map to display. See OptionsHelper.to_map_type for how values are translated and review google maps 
+    # supported[http://code.google.com/apis/maps/documentation/reference.html#GMapType] map types.
     #
     # ==== Examples:
+    #
     #  map.type = :satellite
     #  map.type = :hybrid
     #  map.type = :physical
     #  map.type = :sky_visible
     def type=(value)
       @type = value
-      self << "#{self.var}.setMapType(#{value.to_map_type});"
+      self << "#{self.var}.setMapType(#{Google::OptionsHelper.to_map_type(value)});"
     end
     
     # Removes map +types+ from the map. See the map type contants[http://code.google.com/apis/maps/documentation/reference.html#GMapType]
@@ -150,7 +147,7 @@ module Google # :nodoc:
     #   map.remove_type :normal, :satellite    
     def remove_type(*types)
       types.each do |type|
-        self.remove_map_type type.to_map_type
+        self.remove_map_type Google::OptionsHelper.to_map_type(type)
       end
     end    
 
@@ -246,7 +243,7 @@ module Google # :nodoc:
       :last_mouse_location
     end
 
-    # Adds the +control+ to the map, see Control_types of valid controls.
+    # Adds the +control+ to the map, see OptionsHelper.to_google_control for how +control+ will be translated.
     #
     # ==== Options:
     # * +position+ - Optional. The position that the control should be placed.
@@ -258,19 +255,14 @@ module Google # :nodoc:
     #  map.add_control :map_type, :position => {:anchor => :top_left}
     #  map.add_control :map_type, :position => {:anchor => :top_left, :offset => [10, 10]}
     def add_control(control, options = {})
-      control = "new #{control.to_google_control}()" if control.is_a?(Symbol)
+      control = "new #{Google::OptionsHelper.to_google_control(control)}()" if control.is_a?(Symbol)
       position = Google::OptionsHelper.to_google_position options[:position]
       arguments = [control, position].compact
 
       script << "#{self.var}.addControl(#{arguments.join(', ')});"
     end
 
-    # Adds a pane with the given +options+ which can be anything Google::Pane supports.
-    def add_pane(options)
-      self.add_control Google::Pane.new(options)
-    end
-
-    # Adds a control or controls to the map, see Control_types of valid controls.
+    # Adds a control or controls to the map, see OptionsHelper.to_google_control for how +controls+ will be translated.
     # The controls will all be placed at their default positions, if you need control over the position use add_control.   
     #
     # ==== Examples:
@@ -281,6 +273,11 @@ module Google # :nodoc:
       controls.flatten.each do |control|
         self.add_control control
       end
+    end
+
+    # Adds a pane with the given +options+ which can be anything Google::Pane supports.
+    def add_pane(options)
+      self.add_control Google::Pane.new(options)
     end
     
     # Replaces an existing marker on the map.
@@ -548,7 +545,7 @@ module Google # :nodoc:
     # * +zoom_level+ - Optional. Sets the blowup to a particular zoom level.
     # * +map_type+ - Optional. Set the type of map shown in the blowup.
     def show_blowup(options = {})
-      options[:map_type] = options[:map_type].to_map_type if options[:map_type]
+      options[:map_type] = Google::OptionsHelper.to_map_type(options[:map_type]) if options[:map_type]
       location = Google::OptionsHelper.to_location(options.extract(:location))
       
       self << "#{self.var}.showMapBlowup(#{location}, #{options.to_google_options});" 

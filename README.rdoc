@@ -1,4 +1,4 @@
-== eschaton => google maps on rails for bipeds(and also ungulates)
+== eschaton => google maps on rails for humans
 
 Helps with writing google map mashups in Rails bringing together the Bodacity(measure of bodaciousness) of 
 Google Maps and Rails. If you have an issue please feed-it-back on Github issues[http://github.com/yawningman/eschaton/issues]
@@ -51,7 +51,34 @@ Enough talk, lets code!
     marker.open_info_window :text => "Yes, I was getting tired of flying..."
   end
 
-and remember that
+Say you want to show your friends how you would hop across a crater on Mars.
+We also want to include the google search bar, incase we want to sight see whilst on Mars.
+
+  map = Google::Map.new(:controls => [:small_map, :map_type], :type => :mars_elevation,
+                        :zoom => 6)
+
+  map.enable_google_bar! # For sight seeing
+
+  hops = [[-0.252, 14.414], [-0.977, 15.446], [-1.735, 16.094],
+          [-2.679, 16.171], [-4.346, 16.600], [-4.598, 17.116],
+          [-6.271, 19.379]]
+
+  hops.each do |location|                  
+    tooltip_text = if location == hops.first
+                     'Start here!'
+                   elsif location == hops.last
+                     'End here!'
+                   else
+                     'Hop'
+                   end
+
+    marker = map.add_marker :location => location, :tooltip => {:text => tooltip_text, :show => :always}
+    marker.click do
+      marker.open_info_window :text => "Its really hot in this crater!"
+    end
+  end
+
+Both Hashes and Arrays can represent a Location, so use which ever form you prefer.
 
   {:latitude => -33.947, :longitude => 18.462} == [-33.947, 18.462]
 

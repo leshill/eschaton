@@ -13,6 +13,8 @@ last_mouse_location = location;
 });
 }
 map_mousemove_event = map_mousemove(map);
+map.addControl(new GLargeMapControl3D());
+map.addControl(new GMapTypeControl());
 marker = new GMarker(new GLatLng(-33.0, 18.0), {draggable: false});
 map.addOverlay(marker);
 track_bounds.extend(marker.getLatLng());

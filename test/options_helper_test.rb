@@ -163,4 +163,36 @@ class OptionsHelperTest < Test::Unit::TestCase
     assert_equal north_east_point_longitude, ground_overlay_from_hash.bounds.north_east_point.longitude
   end
 
+  def test_to_map_type
+    assert_equal :G_NORMAL_MAP, Google::OptionsHelper.to_map_type(:normal)
+    assert_equal :G_SATELLITE_MAP, Google::OptionsHelper.to_map_type(:satellite)
+    assert_equal :G_HYBRID_MAP, Google::OptionsHelper.to_map_type(:hybrid)
+    assert_equal :G_PHYSICAL_MAP, Google::OptionsHelper.to_map_type(:physical)
+  end
+
+
+  def test_to_google_control
+    assert_equal :GSmallMapControl,  Google::OptionsHelper.to_google_control(:small_map)
+    assert_equal :GScaleControl, Google::OptionsHelper.to_google_control(:scale)
+    assert_equal :GMapTypeControl, Google::OptionsHelper.to_google_control(:map_type)
+    assert_equal :GOverviewMapControl, Google::OptionsHelper.to_google_control(:overview_map)
+    
+    # 3D controls
+    assert_equal :GLargeMapControl3D, Google::OptionsHelper.to_google_control(:large_map_3D)
+    assert_equal :GSmallZoomControl3D, Google::OptionsHelper.to_google_control(:small_zoom_3D)
+  end
+    
+  def test_to_google_anchor
+    assert_equal :G_ANCHOR_TOP_RIGHT, Google::OptionsHelper.to_google_anchor(:top_right)
+    assert_equal :G_ANCHOR_TOP_LEFT, Google::OptionsHelper.to_google_anchor(:top_left)
+    assert_equal :G_ANCHOR_BOTTOM_RIGHT, Google::OptionsHelper.to_google_anchor(:bottom_right)
+    assert_equal :G_ANCHOR_BOTTOM_LEFT, Google::OptionsHelper.to_google_anchor(:bottom_left)
+  end
+
+  def test_array_to_google_size
+    assert_equal "new GSize(10, 10)", Google::OptionsHelper.to_google_size([10, 10])
+    assert_equal "new GSize(100, 50)", Google::OptionsHelper.to_google_size([100, 50])
+    assert_equal "new GSize(200, 150)", Google::OptionsHelper.to_google_size([200, 150])    
+  end
+
 end

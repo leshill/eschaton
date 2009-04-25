@@ -209,7 +209,7 @@ module Google
     # * +zoom_level+ - Optional. Sets the blowup to a particular zoom level.
     # * +map_type+ - Optional. Set the type of map shown in the blowup.
     def show_map_blowup(options = {})
-     options[:map_type] = options[:map_type].to_map_type if options[:map_type]
+     options[:map_type] = Google::OptionsHelper.to_map_type(options[:map_type]) if options[:map_type]
 
      self << "#{self.var}.showMapBlowup(#{options.to_google_options});" 
     end
