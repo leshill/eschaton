@@ -5,6 +5,8 @@ module Eschaton
   # Any method called on this object will translate the methods into a javascript compatable 
   # camelCase method which is called on the +var+. Calls are stacked and javascript is returned by calling to_s.
   class JavascriptObject
+    extend Eschaton::ReadableAttributes
+
     attr_reader :var, :create_var
 
     # ==== Options:

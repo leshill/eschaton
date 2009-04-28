@@ -3,7 +3,8 @@ module Google
   # Represents a rectangle in geographical coordinates, including one that crosses the 180 degrees meridian.
   # See googles online[http://code.google.com/apis/maps/documentation/reference.html#GLatLngBounds] docs for details.
   class Bounds < MapObject
-    attr_reader :south_west_point, :north_east_point 
+    attributes :south_west_point => [:reader, {:protected => :writer}],
+               :north_east_point => [:reader , {:protected => :writer}]  
     
     # ==== Options:
     # * +south_west_point+ - Optional. The south west point of the rectangle.
@@ -39,7 +40,6 @@ module Google
       "#{self}.getCenter()"
     end
 
-    protected
-      attr_writer :south_west_point, :north_east_point
   end
+
 end

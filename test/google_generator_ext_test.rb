@@ -27,6 +27,8 @@ class GoogleGeneratorExtTest < Test::Unit::TestCase
                              });
                              }
                              map_mousemove_event = map_mousemove(map);
+                             map.addControl(new GLargeMapControl3D());
+                             map.addControl(new GMapTypeControl());                             
                              } else { alert('Your browser be old, it cannot run google maps!');}
                              })", script
     end
