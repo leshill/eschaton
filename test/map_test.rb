@@ -496,5 +496,23 @@ class MapTest < Test::Unit::TestCase
                             
     end    
   end
+  
+  def test_after_info_window_opened
+    Eschaton.with_global_script do |script|
+      map = self.default_test_map
+  
+      assert_output_fixture 'function map_infowindowopen(map){
+                               return GEvent.addListener(map, "infowindowopen", function() {
+                                 alert("Info window opened on map!");
+                               });
+                             }
+                             map_infowindowopen_event = map_infowindowopen(map);', 
+                            script.record_for_test {
+                              map.after_info_window_opened do |script|
+                                script.alert('Info window opened on map!')
+                              end
+                            }
+    end
+  end
 
 end

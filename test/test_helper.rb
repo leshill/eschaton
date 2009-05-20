@@ -96,11 +96,10 @@ class EschatonMockView
   def render(options)
     "test output for render"
   end
-  
+
   # For mocking purposes
   def method_missing(method_id, *args)
   end
-
 end
 
 Eschaton.current_view = EschatonMockView.new

@@ -138,6 +138,14 @@ module Google
       info_window.open_on_marker options
     end
     
+    # This event is fired after an info window has been opened on this marker.
+    #
+    # ==== Yields:
+    # * +script+ - A JavaScriptGenerator to assist in generating javascript or interacting with the DOM.    
+    def after_info_window_opened(&block)
+      self.listen_to :event => :infowindowopen, &block
+    end    
+    
     # Supports all the same options as open_info_window. The info window is then cached so that every time the marker is 'clicked'
     # it will open up the cached info window. The cached info window can also be opened using open_cached_info_window.
     def cache_info_window(options)

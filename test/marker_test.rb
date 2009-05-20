@@ -492,4 +492,22 @@ class MarkerTest < Test::Unit::TestCase
     end    
   end
   
+  def test_after_info_window_opened
+    Eschaton.with_global_script do |script|
+      marker = self.default_marker
+  
+      assert_output_fixture 'function marker_infowindowopen(marker){
+                               return GEvent.addListener(marker, "infowindowopen", function() {
+                                 alert("Info window opened on marker!");
+                               });
+                             }
+                             marker_infowindowopen_event = marker_infowindowopen(marker);', 
+                            script.record_for_test {
+                              marker.after_info_window_opened do |script|
+                                script.alert('Info window opened on marker!')
+                              end
+                            }
+    end
+  end  
+  
 end

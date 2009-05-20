@@ -530,6 +530,14 @@ module Google # :nodoc:
       info_window = InfoWindow.new(:object => self)
       info_window.open options
     end
+    
+    # This event is fired after an info window has been opened on the map.
+    #
+    # ==== Yields:
+    # * +script+ - A JavaScriptGenerator to assist in generating javascript or interacting with the DOM.
+    def after_info_window_opened(&block)
+      self.listen_to :event => :infowindowopen, &block
+    end
 
     # Updates the contents of an existing info window. This supports the relevant content options of open_info_window. 
     def update_info_window(options)
