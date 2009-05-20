@@ -26,7 +26,7 @@ module Eschaton
        
         Eschaton.dependencies.load_paths << location
         Dir["#{location}/*.rb"].each do |file|
-          Eschaton.dependencies.require_or_load file
+          Eschaton.dependencies.require file
         end
 
         # Generator extentions
