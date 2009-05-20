@@ -87,19 +87,6 @@ class Test::Unit::TestCase
 end
 
 class EschatonMockView
-  attr_accessor :template_format
-  include ActionView::Helpers::JavaScriptHelper
-  include ActionView::Helpers::PrototypeHelper
-  include ActionView::Helpers::ScriptaculousHelper
-
-  include ActionView::Helpers::UrlHelper
-  include ActionView::Helpers::TagHelper
-  include ActionView::Helpers::TextHelper
-  include ActionView::Helpers::FormTagHelper
-  include ActionView::Helpers::FormHelper
-  include ActionView::Helpers::CaptureHelper
-  include ActionView::Helpers::RecordIdentificationHelper
-  include ActionController::PolymorphicRoutes
     
   def url_for(options)
     options.merge!(:only_path => true)
@@ -110,9 +97,8 @@ class EschatonMockView
     "test output for render"
   end
   
-  # TODO - Mix this in for real 
-  def protect_against_forgery?
-    false
+  # For mocking purposes
+  def method_missing(method_id, *args)
   end
 
 end
