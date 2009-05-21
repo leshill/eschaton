@@ -107,13 +107,13 @@ module Google # :nodoc:
 
       options.assert_valid_keys :center, :controls, :zoom, :type, :keyboard_navigation
 
+      self.track_bounds!
+
       if self.create_var?
         Google::Scripts.before_map_script << "var map;" # For IE Fix
 
         script << "map_lines = new Array();"
         script << "#{self.var} = new GMap2(document.getElementById('#{self.var}'));" 
-
-        self.track_bounds!
 
         self.center = options.extract(:center)
         self.zoom = options.extract(:zoom)        
@@ -572,8 +572,12 @@ module Google # :nodoc:
       end
 
       def track_bounds! # :nodoc:
-        self.bounds = Google::Bounds.new(:var => :track_bounds)
-      end        
+        self.bounds = if self.create_var?
+                        Google::Bounds.new(:var => :track_bounds)
+                      else
+                        Google::Bounds.existing(:var => :track_bounds)
+                      end
+      end
 
       def track_last_mouse_location! # :nodoc:
         self << "last_mouse_location = #{self.center};"

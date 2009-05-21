@@ -15,9 +15,9 @@ class GoogleGeneratorExtTest < Test::Unit::TestCase
                              jQuery(document).ready(function() {
                              window.onunload = GUnload;
                              if (GBrowserIsCompatible()) {
+                             track_bounds = new GLatLngBounds();                               
                              map_lines = new Array();
                              map = new GMap2(document.getElementById('map'));
-                             track_bounds = new GLatLngBounds();
                              map.setCenter(cape_town);
                              map.setZoom(9);
                              last_mouse_location = map.getCenter();

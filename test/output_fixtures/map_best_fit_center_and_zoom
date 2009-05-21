@@ -2,9 +2,9 @@ var map;
 jQuery(document).ready(function() {
 window.onunload = GUnload;
 if (GBrowserIsCompatible()) {
+track_bounds = new GLatLngBounds();
 map_lines = new Array();
 map = new GMap2(document.getElementById('map'));
-track_bounds = new GLatLngBounds();
 map.setCenter(new GLatLng(-33.947, 18.462));
 last_mouse_location = map.getCenter();
 function map_mousemove(map){
