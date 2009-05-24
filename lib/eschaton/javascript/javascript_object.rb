@@ -39,7 +39,15 @@ module Eschaton
     end
 
     alias method_missing method_to_js
+    
+    def return_javascript
+      returner = Eschaton::JavascriptReturner.new(:var => self.var)
 
+      self << returner
+
+      returner
+    end
+    
     # Adds +javascript+ to the generator.
     #
     # self << "var i = 10;"

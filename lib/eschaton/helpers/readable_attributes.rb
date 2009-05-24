@@ -23,6 +23,10 @@ module Eschaton
         end
       end
     end
+    
+    def self.public_reader_protected_writer
+      [:reader, {:protected => :writer}]
+    end
   
   end
 
