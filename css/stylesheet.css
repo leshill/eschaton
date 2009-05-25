@@ -23,7 +23,7 @@ a:link { color: #FFA500; }
 a:visited { color: #FFA500; }
 a:hover{
   color: #FFF; 
-  background-color: #30c; 
+  background-color: #CDCDCD; 
   text-decoration: none; 
 }
 
@@ -69,4 +69,23 @@ pre{
   border: dotted 1px #004A4C;
   padding: 1px;
   font-style: italic;
+}
+
+.post_list_item{
+ margin-bottom: 18px;
+}
+
+.post_tab{
+  border: solid 3px #F5F5F5; 
+  border-bottom: none; 
+  background-color: #AAA; 
+  padding: 5px; 
+  width: 45%;
+}
+
+.post_content{
+  border: solid 1px #F5F5F5; 
+  border-left: solid 3px #F5F5F5; 
+  border-bottom: solid 2px #F9F9F9; 
+  padding: 10px;
 }
