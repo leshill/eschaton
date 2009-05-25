@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+ 
+ <title>yawningman</title>
+ <link href="http://yawningman.github.com/atom.xml" rel="self"/>
+ <link href="http://yawningman.github.com/"/>
+ <updated>2009-05-25T23:43:40+02:00</updated>
+ <id>http://yawningman.github.com/</id>
+ <author>
+   <name>yawningman</name>
+ </author>
+
+ 
+ <entry>
+   <title>google api config file</title>
+   <link href="http://yawningman.github.com//2009/02/26/google-api-config-file.html"/>
+   <updated>2009-02-26T00:00:00+02:00</updated>
+   <id>http://yawningman.github.com//2009/02/26/google-api-config-file</id>
+   <content type="html">
+&lt;p&gt;
+I recently added support for putting google api keys into a yaml config file &lt;span class="site_quote"&gt;(&lt;b&gt;config/eschaton_google_api_keys.yml&lt;/b&gt;)&lt;/span&gt;.
+This config file will allow you to add keys for environments(development, test, staging and production) as well as 
+for specific domain names.
+&lt;/p&gt;
+
+&lt;p&gt;
+If there is a domain name in the config file that matches your current domain name&lt;span class="site_quote"&gt;(using ActionController::Request#domain)&lt;/span&gt;
+it will be honored over any environment keys. This allows for testing with sub domains even when in development mode.
+&lt;/p&gt;
+
+&lt;h3&gt;For existing eschaton developers&lt;/h3&gt;
+&lt;p&gt;
+  Existing developers will be familiar with the &lt;span class="site_quote"&gt;GOOGLE_MAPS_API_KEY&lt;/span&gt; constant.&lt;br/&gt;
+  Follow these steps to start using the config file instead:
+  &lt;ol&gt;
+    &lt;li&gt;Pull the latest eschaton&lt;/li&gt;
+    &lt;li&gt;Create the file &lt;span class="site_quote"&gt;&lt;b&gt;config/eschaton_google_api_keys.yml&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;
+      Add any environment and domain name keys in the above file, see &lt;span class="site_quote"&gt;&lt;b&gt;generators/map/templates/eschaton_google_api_keys.yml&lt;/b&gt;&lt;/span&gt;
+      for a sample format
+    &lt;/li&gt;
+    &lt;li&gt;Remove any reference to the &lt;span class="site_quote"&gt;GOOGLE_MAPS_API_KEY&lt;/span&gt; constant in your code.&lt;/li&gt;
+    &lt;li&gt;Restart your app&lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/p&gt;
+
+&lt;h3&gt;For new eschaton developers&lt;/h3&gt;
+&lt;p&gt;
+  The config file is now created as part of the map generator &lt;span class="site_quote"&gt;script/generate map&lt;/span&gt; so new
+  developers can start using it right away.
+&lt;/p&gt;</content>
+ </entry>
+ 
+ 
+</feed>

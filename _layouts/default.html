@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width = 750">
+    <link rel="stylesheet" type="text/css" href="/css/stylesheet.css" charset="utf-8">
+    <title>{{ page.title }}</title>
+    <script type="text/javascript" src="/javascript/jquery.js"></script>
+    <script type="text/javascript" src="/javascript/fancyzoom.js"></script>    
+  </head>
+  <body>
+    <script type="text/javascript" charset="utf-8">
+      $(document).ready(function() {
+        $('a.zoom').fancyZoom({scaleImg: true, closeOnClick: true, directory: '/images/fancy_zoom'});
+      });
+    </script>
+    <div id="header" onclick="window.location.href = '/';">
+       <h1>
+         Eschaton
+       </h1>
+    </div>
+    <div id="content">    
+
+    {{content}}
+            
+    </div>
+    <div id="footer">
+      
+    </div>
+  </body>
+</html>
