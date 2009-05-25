@@ -72,11 +72,9 @@ module Google
         if self.encoded?
           self.encoded = self.encoded.arify
         else
-          self.vertices = options.extract(:vertices).arify.collect do |vertex|
-                                                                     Google::OptionsHelper.to_location(vertex)
-                                                                   end
+          self.vertices = Google::OptionsHelper.to_vertices(options.extract(:vertices))
         end
-                                                                   
+                                         
         editable = options.extract(:editable)
         
         border_colour =  options.extract(:border_colour) 
@@ -103,18 +101,28 @@ module Google
 
           self << "#{self.var} = new GPolygon.fromEncoded(#{encode_options.to_google_options(:dont_convert => [:polylines])});"
         else
-          self << "#{self.var} = new GPolygon([#{self.vertices.join(', ')}], #{border_colour.to_js}, #{border_thickness.to_js}, #{border_opacity.to_js}, #{fill_colour.to_js}, #{fill_opacity.to_js}, #{remaining_options.to_google_options});"
+          javascript_locations = Google::OptionsHelper.to_location_array(self.vertices)
+          self << "#{self.var} = new GPolygon(#{javascript_locations}, #{border_colour.to_js}, #{border_thickness.to_js}, #{border_opacity.to_js}, #{fill_colour.to_js}, #{fill_opacity.to_js}, #{remaining_options.to_google_options});"
         end
 
         self.enable_editing! if editable
         self.set_tooltip(tooltip_options) if tooltip_options
       end
     end
-
+  
     # Adds a vertex at the given +location+ and updates the shape of the polygon.
     def add_vertex(location)
       location = Google::OptionsHelper.to_location(location)
       self << "#{self.var}.insertVertex(#{self.last_vertex_index}, #{location})"
+    end
+    
+    def add_vertex_at(options) # TODO - test
+      location = Google::OptionsHelper.to_location(options[:location])
+      self << "#{self.var}.insertVertex(#{options[:position]}, #{location})"      
+    end
+
+    def remove_vertex_at(position) # TODO - test
+      self.delete_vertex(position)
     end
 
     def click(&block)

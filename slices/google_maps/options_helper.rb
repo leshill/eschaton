@@ -2,7 +2,26 @@ module Google
   
   # Provides translation to the relevant Google mapping objects when working with method options.
   class OptionsHelper
-
+    
+    def self.to_location_array(locations)  # TODO - test
+      if locations.is_a?(Array)
+        google_locations = locations.collect {|location| Google::OptionsHelper.to_location(location)}            
+        "[#{google_locations.join(', ')}]"
+      else
+        locations
+      end
+    end
+    
+    def self.to_vertices(vertices) # TODO - test
+      if vertices.is_a?(Symbol) || vertices.is_a?(String)
+        vertices
+      else
+        vertices.arify.collect do |vertex|
+          Google::OptionsHelper.to_location(vertex)
+        end
+      end      
+    end
+    
     # TODO - Support URLS here
     def self.to_content(options) # :nodoc:
       if options[:partial]

@@ -177,6 +177,14 @@ module Google
       end
     end
 
+    # This event is fired when the marker is "double clicked".
+    #
+    # ==== Yields:
+    # * +script+ - A JavaScriptGenerator to assist in generating javascript or interacting with the DOM.    
+    def double_click(&block) # TODO - test
+      self.listen_to :event => :dblclick, &block
+    end
+
     # This event is fired when the marker is "picked up" at the beginning of being dragged.
     #
     # ==== Yields:
