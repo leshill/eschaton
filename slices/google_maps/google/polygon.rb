@@ -62,7 +62,9 @@ module Google
                        # Encode options
                        :encoded => nil,                       
                        :fill => true,
-                       :outline => true
+                       :outline => true,
+                       :clickable => true
+                       
 
       super
 
@@ -163,7 +165,7 @@ module Google
     end
     
     def last_vertex_index
-      "#{self.vertext_count} - 1"
+      "#{self.vertex_count} - 1"
     end
     
     def vertex_count
