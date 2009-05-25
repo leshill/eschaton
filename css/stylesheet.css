@@ -62,5 +62,11 @@ pre{
 
 
 #header{
-  clear: both;
+  height: 70px;
+}
+
+.site_quote{
+  border: dotted 1px #004A4C;
+  padding: 1px;
+  font-style: italic;
 }
