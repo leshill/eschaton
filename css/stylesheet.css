@@ -12,11 +12,8 @@ body {
 	font: 16px "Helvetica Neue", Helvetica,Arial,sans-serif;
 	padding: 60px;
 	padding-top: 0;
-	background-image: url(/eschaton/images/gradient.png);
-	background-position: bottom;
-	background-repeat: repeat-x;
 	height: 98%;
-	color: #FFF;
+	color: #ECECEC;
 }
 
 a:link { color: #FFA500; }
@@ -63,6 +60,7 @@ pre{
 
 #header{
   height: 70px;
+  cursor: pointer;
 }
 
 .site_quote{
