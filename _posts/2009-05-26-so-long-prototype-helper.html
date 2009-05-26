@@ -1,0 +1,50 @@
+---
+layout: post
+title: So long Prototype helper
+---
+
+<p>
+  Ever since its inception, eschaton has relied heavily on 
+  <a href="http://api.rubyonrails.org/classes/ActionView/Helpers/PrototypeHelper/JavaScriptGenerator/GeneratorMethods.html">PrototypeHelper::JavaScriptGenerator</a> 
+  for its generation and output mechanism. The choice was made to ride on the coat tails of <span class="site_quote">PrototypeHelper::JavaScriptGenerator</span>
+  to quickly get something going, get the project online and consumed by <a href="https://github.com/uroboros/convene/tree">Convene</a>.
+  
+  <br/>
+  <br/>
+   Like all relationships in life, it has been up and down with <span class="site_quote">PrototypeHelper::JavaScriptGenerator</span>, has served its
+   purpose and it has stood up to a few challenges but its time to refactor.
+</p>
+
+<h2 class="post_seperator_header">Enter Eschaton::CodePage</h2>
+<p>
+  <span class="site_quote">Eschaton::CodePage</span> is a slender creature, weighing in just under <b>70 lines of code</b>. Though it is small
+  it lies at the heart of what eschaton is. It carries all the proverbial "Silver Magic Ships" that Rodriguez spoke about in the 70's.
+  <br/>
+  <br/>
+  Its function in nature is to generate output, thats all. Its simple use can be seen here:
+
+</p>
+
+<script src="http://gist.github.com/118212.js"> </script>
+
+<p>
+  This example may seem contrived, trivial and irrelevant but watch what happens when we introduce a new Object.
+  This will paraphrase <a href="http://www.android.com/">Android</a> markup, but you get the idea.
+</p>
+  
+<script src="http://gist.github.com/118223.js"> </script>  
+  
+<h2 class="post_seperator_header">But what about PrototypeHelper::JavaScriptGenerator ?</h2>
+<p>
+  <span class="site_quote">PrototypeHelper::JavaScriptGenerator</span> is used in many places in the eschaton and is expected in many places.
+  But now, a Eschaton::CodePage will be returned. However, the Eschaton::CodePage will behave in exactly the same manner as <span class="site_quote">PrototypeHelper::JavaScriptGenerator</span> 
+  and contain all the expected methods and output by wrapping it. This will all be abstracted for your convenience.
+  
+  Here is a test to clarify
+</p>
+
+<script src="http://gist.github.com/118239.js"> </script>
+
+<p>
+  These changes will be coming soon along with some others. Next up is that eschaton will be less intrusive to rails.
+</p>

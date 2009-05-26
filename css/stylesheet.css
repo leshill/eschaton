@@ -37,12 +37,7 @@ li{
 }
 
 h1, h2, h3, h4{
-  xborder-bottom: solid 2px #808080;
-}
-
-h3{
-  xmargin-top: 20px;
-  xmargin-bottom: 10px;
+	color: #D6D6D6;
 }
 
 p{
@@ -86,4 +81,8 @@ pre{
   border-left: solid 3px #F5F5F5; 
   border-bottom: solid 2px #F9F9F9; 
   padding: 10px;
+}
+
+.post_seperator_header{
+  border-bottom: dotted 1px #FFF;
 }
