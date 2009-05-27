@@ -22,7 +22,7 @@ module Eschaton
       end
     
       def self.mixin_slice_extentions(location)
-        _logger_info "loading slice '#{File.basename(location)}'"
+        eschaton_log_info "loading slice '#{File.basename(location)}'"
        
         Eschaton.dependencies.load_paths << location
         Dir["#{location}/*.rb"].each do |file|

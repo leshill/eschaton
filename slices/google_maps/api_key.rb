@@ -25,7 +25,7 @@ module Google
                     'ABQIAAAActtI8WkgLZcM_n8uvnIYsBTJQa0g3IQ9GZqIMmInSLzwtGDKaBT9A95dZjICm7SeC_GoxpzGlyCdQA'
                   end
 
-        _logger_info "Using google api => #{self.key}"                  
+        eschaton_log_info "Using google api => #{self.key}"                  
       end
       
       self.key
