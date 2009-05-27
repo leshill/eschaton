@@ -32,21 +32,18 @@ module Eschaton
     end
 
     alias create_var? create_var
-
+    
     # Converts the given +method+ and +args+ to a javascript method call with arguments.  
     def method_to_js(method, *args)
-      self << "#{self.var}.#{method.to_js_method}(#{args.to_js_arguments});"
+      method_name = method.to_s 
+      if method_name =~ /\?$/
+        "#{self.var}.#{method_name.chop.to_js_method}(#{args.to_js_arguments})".to_sym
+      else
+        self << "#{self.var}.#{method.to_js_method}(#{args.to_js_arguments});"
+      end
     end
 
     alias method_missing method_to_js
-    
-    def return_javascript
-      returner = Eschaton::JavascriptReturner.new(:var => self.var)
-
-      self << returner
-
-      returner
-    end
     
     # Adds +javascript+ to the generator.
     #
