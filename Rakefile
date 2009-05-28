@@ -1,4 +1,5 @@
 require 'rake'
+require 'yard'
 require 'rake/testtask'
 require 'rake/rdoctask'
 require 'code_statistics'
@@ -28,9 +29,23 @@ task :stats do
   CodeStatistics.new(*STATS_DIRECTORIES).to_s
 end
 
+def clear_docs
+  FileUtils.rm_rf("doc")
+end
+
+desc 'Generate YARD documentation for the eschaton plugin.'
+YARD::Rake::YardocTask.new(:ydoc) do |t|
+  clear_docs
+  
+  t.files = ['lib/**/*.rb', "slices/*/**/*.rb"]
+  t.options = ['-r', 'README.rdoc', '-d', 'doc']  
+end
+
 desc 'Generate documentation for the eschaton plugin.'
 Rake::RDocTask.new(:rdoc) do |rdoc|
-  rdoc.rdoc_dir = 'rdoc'
+  clear_docs
+    
+  rdoc.rdoc_dir = 'doc'
   rdoc.title    = 'eschaton'
   rdoc.options << '--line-numbers' << '--inline-source'
   rdoc.rdoc_files.include('README.rdoc')
@@ -40,19 +55,9 @@ Rake::RDocTask.new(:rdoc) do |rdoc|
   rdoc.rdoc_files.include("slices/*/**/*.rb")
 end
 
-desc 'Prepare docs for deployment to blog'
-task :prep_blog_docs => :rdoc do
-  `rm -rf blog_rdoc`
-  `mv rdoc blog_rdoc`
-end
-
-task :merge_blog_docs do
-  `mv blog_rdoc rdoc`
-end
-
 desc 'Opens documentation for the eschaton plugin.'
 task :open_doc do |rdoc|
-  `open rdoc/index.html`
+  `open doc/index.html`
 end
 
 desc 'Default: run eschaton tests.'
