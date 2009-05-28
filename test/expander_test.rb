@@ -31,7 +31,7 @@ class ExpanderTest < Test::Unit::TestCase
     
     Store.clear(:before_map_script)
     
-    assert_output_fixture 'Before expander
+    assert_eschaton_output 'Before expander
                            Before Map Script
                            /* This is before the map script! */
                            After expander',

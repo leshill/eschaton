@@ -10,98 +10,83 @@ class MarkerTest < Test::Unit::TestCase
 
   def test_initialize
     with_eschaton do |script|
-      assert_output_fixture 'marker = new GMarker(new GLatLng(-33.947, 18.462), {draggable: false});', 
-                             script.record_for_test {
+      assert_eschaton_output 'marker = new GMarker(new GLatLng(-33.947, 18.462), {draggable: false});' do
                                 marker = self.default_marker
-                              }
+                              end
 
-      assert_output_fixture 'marker = new GMarker(existing_location, {draggable: false});', 
-                             script.record_for_test {
+      assert_eschaton_output 'marker = new GMarker(existing_location, {draggable: false});' do
                                marker = Google::Marker.new :var => :marker, :location => :existing_location  
-                             }
+                             end
 
-      assert_output_fixture :marker_with_icon,
-                            script.record_for_test {
+      assert_eschaton_output :marker_with_icon do
                               marker = Google::Marker.new :var => :marker, :location => :existing_location, :icon => :blue
-                            }
+                            end
 
-      assert_output_fixture 'marker = new GMarker(existing_location, {draggable: false, title: "Marker title!"});',
-                            script.record_for_test {
+      assert_eschaton_output 'marker = new GMarker(existing_location, {draggable: false, title: "Marker title!"});' do
                               marker = Google::Marker.new :var => :marker, :location => :existing_location, :title => 'Marker title!'
-                            }
+                            end
 
-      assert_output_fixture 'marker = new GMarker(existing_location, {bouncy: false, draggable: false, title: "Marker title!"});',
-                            script.record_for_test {
+      assert_eschaton_output 'marker = new GMarker(existing_location, {bouncy: false, draggable: false, title: "Marker title!"});' do
                               marker = Google::Marker.new :var => :marker, :location => :existing_location, :title => 'Marker title!',
                                                           :bouncy => false
-                            }                            
-                            
+                            end
     end
   end
 
   def test_initialize_with_gravatar
     with_eschaton do |script|
-      assert_output_fixture :marker_gravatar, 
-                             script.record_for_test {
+      assert_eschaton_output :marker_gravatar do
                                Google::Marker.new :var => :marker, :location => {:latitude => -33.947, :longitude => 18.462},
                                                   :gravatar => 'yawningman@eschaton.com'
-                             }
+                             end
 
-     assert_output_fixture :marker_gravatar, 
-                            script.record_for_test {
+     assert_eschaton_output :marker_gravatar do
                               Google::Marker.new :var => :marker, :location => {:latitude => -33.947, :longitude => 18.462},
                                                  :gravatar => {:email_address => 'yawningman@eschaton.com'}
-                            }
+                            end
 
-      assert_output_fixture :marker_gravatar_with_size, 
-                            script.record_for_test {
+      assert_eschaton_output :marker_gravatar_with_size do
                               Google::Marker.new :var => :marker, :location => {:latitude => -33.947, :longitude => 18.462},
                                                  :gravatar => {:email_address => 'yawningman@eschaton.com', :size => 50}
-                            }
+                            end
 
-      assert_output_fixture :marker_gravatar_with_default_icon, 
-                            script.record_for_test {
+      assert_eschaton_output :marker_gravatar_with_default_icon do
                               Google::Marker.new :var => :marker, :location => {:latitude => -33.947, :longitude => 18.462},
                                                  :gravatar => {:email_address => 'yawningman@eschaton.com', 
                                                                :default => 'http://localhost:3000/images/blue.png'}
-                            }
+                            end
 
-      assert_output_fixture :marker_gravatar_with_size_and_default_icon, 
-                            script.record_for_test {
+      assert_eschaton_output :marker_gravatar_with_size_and_default_icon do
                               Google::Marker.new :var => :marker, :location => {:latitude => -33.947, :longitude => 18.462},
                                                   :gravatar => {:email_address => 'yawningman@eschaton.com', 
                                                                 :default => 'http://localhost:3000/images/blue.png',
                                                                 :size => 50}
-                            }
+                            end
     end 
   end
 
   def test_initialize_with_tooltip
     with_eschaton do |script|
       map = Google::Map.new
-      assert_output_fixture :marker_tooltip, 
-                             script.record_for_test {
+      assert_eschaton_output :marker_tooltip do
                                map.add_marker :var => :marker, :location => {:latitude => -33.947, :longitude => 18.462},
                                               :tooltip => {:text => 'This is sparta!'}
-                             }
+                             end
                              
-      assert_output_fixture :marker_tooltip,
-                            script.record_for_test {
+      assert_eschaton_output :marker_tooltip do
                               map.add_marker :var => :marker, :location => {:latitude => -33.947, :longitude => 18.462},
                                              :tooltip => {:text => 'This is sparta!', :show => :on_mouse_hover}
-                            }
+                            end
 
-      assert_output_fixture :marker_tooltip_show_always, 
-                            script.record_for_test {
+      assert_eschaton_output :marker_tooltip_show_always do
                               map.add_marker :var => :marker, :location => {:latitude => -33.947, :longitude => 18.462},
                                              :tooltip => {:text => 'This is sparta!', :show => :always}
-                            }
+                            end
  
-      assert_output_fixture :marker_tooltip_with_partial,
-                            script.record_for_test {
+      assert_eschaton_output :marker_tooltip_with_partial do
                               map.add_marker :var => :marker, :location => {:latitude => -33.947, :longitude => 18.462},
                                              :tooltip => {:partial => 'spot_information'}
-                            }
+                            end
    end
   end
 
@@ -122,22 +107,19 @@ class MarkerTest < Test::Unit::TestCase
     with_eschaton do |script|
       marker = self.default_marker
 
-      assert_output_fixture "jQuery.get('/location/show/1?location%5Blatitude%5D=' + marker.getLatLng().lat() + '&location%5Blongitude%5D=' + marker.getLatLng().lng() + '', function(data) {
+      assert_eschaton_output "jQuery.get('/location/show/1?location%5Blatitude%5D=' + marker.getLatLng().lat() + '&location%5Blongitude%5D=' + marker.getLatLng().lng() + '', function(data) {
                                marker.openInfoWindow(\"<div id='info_window_content'>\" + data + \"</div>\");
-                             });",
-                            script.record_for_test {
+                             });" do
                               marker.open_info_window :url => {:controller => :location, :action => :show, :id => 1}
-                            }
+                            end
 
-      assert_output_fixture 'marker.openInfoWindow("<div id=\'info_window_content\'>" + "test output for render" + "</div>");', 
-                             script.record_for_test {
+      assert_eschaton_output 'marker.openInfoWindow("<div id=\'info_window_content\'>" + "test output for render" + "</div>");' do
                                marker.open_info_window :partial => 'create'
-                             }
+                             end
 
-      assert_output_fixture 'marker.openInfoWindow("<div id=\'info_window_content\'>" + "Testing text!" + "</div>");', 
-                             script.record_for_test {
+      assert_eschaton_output 'marker.openInfoWindow("<div id=\'info_window_content\'>" + "Testing text!" + "</div>");' do
                                marker.open_info_window :text => "Testing text!"
-                             }
+                             end
     end
   end
   
@@ -145,22 +127,19 @@ class MarkerTest < Test::Unit::TestCase
     with_eschaton do |script|
       marker = self.default_marker
 
-      assert_output_fixture "jQuery.get('/location/show/1?location%5Blatitude%5D=' + marker.getLatLng().lat() + '&location%5Blongitude%5D=' + marker.getLatLng().lng() + '', function(data) {
+      assert_eschaton_output "jQuery.get('/location/show/1?location%5Blatitude%5D=' + marker.getLatLng().lat() + '&location%5Blongitude%5D=' + marker.getLatLng().lng() + '', function(data) {
                                marker.bindInfoWindowHtml(\"<div id='info_window_content'>\" + data + \"</div>\");
-                             });",
-                            script.record_for_test {
+                             });" do
                               marker.cache_info_window :url => {:controller => :location, :action => :show, :id => 1}
-                            }
+                            end
 
-      assert_output_fixture 'marker.bindInfoWindowHtml("<div id=\'info_window_content\'>" + "test output for render" + "</div>");', 
-                             script.record_for_test {
+      assert_eschaton_output 'marker.bindInfoWindowHtml("<div id=\'info_window_content\'>" + "test output for render" + "</div>");' do
                                marker.cache_info_window :partial => 'create'
-                             }
+                             end
 
-      assert_output_fixture 'marker.bindInfoWindowHtml("<div id=\'info_window_content\'>" + "Testing text!" + "</div>");', 
-                             script.record_for_test {
+      assert_eschaton_output 'marker.bindInfoWindowHtml("<div id=\'info_window_content\'>" + "Testing text!" + "</div>");' do
                                marker.cache_info_window :text => "Testing text!"
-                             }
+                             end
     end
   end  
 
@@ -168,10 +147,9 @@ class MarkerTest < Test::Unit::TestCase
     with_eschaton do |script|
       marker = self.default_marker
 
-      assert_output_fixture "GEvent.trigger(marker, 'click');", 
-                             script.record_for_test {
+      assert_eschaton_output "GEvent.trigger(marker, 'click');" do
                                marker.open_cached_info_window
-                             }
+                             end
     end    
     
   end
@@ -182,25 +160,22 @@ class MarkerTest < Test::Unit::TestCase
       marker = self.default_marker
 
       # without body
-      assert_output_fixture :marker_click_no_body, 
-                            script.record_for_test {
+      assert_eschaton_output :marker_click_no_body do
                                             marker.click {}
-                                          }
+                                          end
     
       # With body
-      assert_output_fixture :marker_click_with_body,
-                            script.record_for_test {
+      assert_eschaton_output :marker_click_with_body do
                               marker.click do |script|
                                 script.comment "This is some test code!"
                                 script.alert("Hello from marker click!")
                               end
-                            }
+                            end
 
       # Info window convention
-      assert_output_fixture :marker_click_info_window,
-                            script.record_for_test {
+      assert_eschaton_output :marker_click_info_window do
                               marker.click :text => "This is a info window!"
-                            }
+                            end
     end    
   end
 
@@ -208,13 +183,12 @@ class MarkerTest < Test::Unit::TestCase
     with_eschaton do |script|
       marker = self.default_marker
       
-      assert_output_fixture :marker_when_picked_up,
-                            script.record_for_test{ 
+      assert_eschaton_output :marker_when_picked_up do
                               marker.when_picked_up{|script|
                                 script.comment "This is some test code!"
                                 script.alert("Hello from marker drop!")
                               }
-                            }
+                            end
     end
   end
 
@@ -222,21 +196,20 @@ class MarkerTest < Test::Unit::TestCase
     with_eschaton do |script|
       marker = self.default_marker
       
-      assert_output_fixture :marker_when_being_dragged,
-                            script.record_for_test{
+      assert_eschaton_output :marker_when_being_dragged do
                               marker.when_being_dragged{|script, current_location|
                                 script.comment "This is some test code!"
                                 script.alert("Hello from marker drag!")
                               }
-                            }
+                            end
     end
   end
   
   def test_when_dropped
     with_eschaton do |script|
       marker = self.default_marker
-      
-      test_output = script.record_for_test do 
+    
+      assert_eschaton_output :marker_when_dropped do
         marker.when_dropped do |script, drop_location|
           assert_equal :drop_location, drop_location
           
@@ -244,8 +217,6 @@ class MarkerTest < Test::Unit::TestCase
           script.alert("Hello from marker drop!")
         end
       end
-
-      assert_output_fixture :marker_when_dropped, test_output
     end
   end
   
@@ -254,28 +225,24 @@ class MarkerTest < Test::Unit::TestCase
       marker = self.default_marker
       
       # Default with hash location
-      assert_output_fixture 'marker.showMapBlowup({});', 
-                            script.record_for_test {
+      assert_eschaton_output 'marker.showMapBlowup({});' do
                               marker.show_map_blowup
-                            }
+                            end
       
       # With :zoom_level
-      assert_output_fixture 'marker.showMapBlowup({zoomLevel: 12});', 
-                            script.record_for_test {
+      assert_eschaton_output 'marker.showMapBlowup({zoomLevel: 12});' do
                               marker.show_map_blowup :zoom_level => 12
-                            }
+                            end
 
       # With :marker_type
-      assert_output_fixture 'marker.showMapBlowup({mapType: G_SATELLITE_MAP});', 
-                            script.record_for_test {
+      assert_eschaton_output 'marker.showMapBlowup({mapType: G_SATELLITE_MAP});' do
                               marker.show_map_blowup :map_type => :satellite
-                            }
+                            end
 
       # With :zoom_level and :marker_type
-      assert_output_fixture 'marker.showMapBlowup({mapType: G_SATELLITE_MAP, zoomLevel: 12});', 
-                            script.record_for_test {
+      assert_eschaton_output 'marker.showMapBlowup({mapType: G_SATELLITE_MAP, zoomLevel: 12});' do
                               marker.show_map_blowup :zoom_level => 12, :map_type => :satellite
-                            }
+                            end
     end
   end
   
@@ -283,50 +250,43 @@ class MarkerTest < Test::Unit::TestCase
     with_eschaton do |script|
       marker = self.default_marker
       
-      assert_output_fixture 'marker.setImage("/images/green.png");', 
-                             script.record_for_test {
+      assert_eschaton_output 'marker.setImage("/images/green.png");' do
                                marker.change_icon :green
-                             }
+                             end
 
-      assert_output_fixture 'marker.setImage("/images/blue.png");', 
-                            script.record_for_test {
+      assert_eschaton_output 'marker.setImage("/images/blue.png");' do
                               marker.change_icon "/images/blue.png"
-                            }
+                            end
     end
   end
   
   def test_circle
     with_eschaton do |script|
-      assert_output_fixture 'marker = new GMarker(new GLatLng(-33.947, 18.462), {draggable: false});
-                             circle_marker = drawCircle(marker.getLatLng(), 1.5, 40, null, 2, null, "#0055ff", null);', 
-                             script.record_for_test{
+      assert_eschaton_output 'marker = new GMarker(new GLatLng(-33.947, 18.462), {draggable: false});
+                             circle_marker = drawCircle(marker.getLatLng(), 1.5, 40, null, 2, null, "#0055ff", null);' do
                                Google::Marker.new :var => :marker, :location => {:latitude => -33.947, :longitude => 18.462},
                                                   :circle => true
-                             }
+                             end
  
-      assert_output_fixture 'marker = new GMarker(new GLatLng(-33.947, 18.462), {draggable: false});
-                             circle_marker = drawCircle(marker.getLatLng(), 500, 40, null, 5, null, "#0055ff", null);', 
-                            script.record_for_test{
+      assert_eschaton_output 'marker = new GMarker(new GLatLng(-33.947, 18.462), {draggable: false});
+                             circle_marker = drawCircle(marker.getLatLng(), 500, 40, null, 5, null, "#0055ff", null);' do
                               Google::Marker.new :var => :marker, :location => {:latitude => -33.947, :longitude => 18.462},
                                                  :circle => {:radius => 500, :border_width => 5}
-                            }
+                            end
 
      marker = self.default_marker
 
-     assert_output_fixture 'circle_marker = drawCircle(marker.getLatLng(), 1.5, 40, null, 2, null, "#0055ff", null);', 
-                            script.record_for_test{
+     assert_eschaton_output 'circle_marker = drawCircle(marker.getLatLng(), 1.5, 40, null, 2, null, "#0055ff", null);' do
                               marker.circle!  
-                            }
+                            end
 
-     assert_output_fixture 'circle_marker = drawCircle(marker.getLatLng(), 500, 40, null, 5, null, "#0055ff", null);', 
-                           script.record_for_test{
+     assert_eschaton_output 'circle_marker = drawCircle(marker.getLatLng(), 500, 40, null, 5, null, "#0055ff", null);' do
                              marker.circle! :radius => 500, :border_width => 5
-                           }
+                           end
 
-     assert_output_fixture 'circle_marker = drawCircle(marker.getLatLng(), 500, 40, null, 5, null, "black", null);', 
-                           script.record_for_test{
+     assert_eschaton_output 'circle_marker = drawCircle(marker.getLatLng(), 500, 40, null, 5, null, "black", null);' do
                              marker.circle! :radius => 500, :border_width => 5, :fill_colour => 'black'
-                           }
+                           end
     end    
   end
   
@@ -335,35 +295,29 @@ class MarkerTest < Test::Unit::TestCase
     with_eschaton do |script|            
       marker = self.default_marker
       
-      assert_output_fixture :marker_set_tooltip_default, 
-                             script.record_for_test{
+      assert_eschaton_output :marker_set_tooltip_default do
                                marker.set_tooltip :text => 'This is sparta!'
-                             }
+                             end
 
-      assert_output_fixture :marker_set_tooltip_default, 
-                            script.record_for_test{
+      assert_eschaton_output :marker_set_tooltip_default do
                               marker.set_tooltip :text => 'This is sparta!', :show => :on_mouse_hover
-                            }
+                            end
                             
-      assert_output_fixture :marker_set_tooltip_show_always, 
-                            script.record_for_test{
+      assert_eschaton_output :marker_set_tooltip_show_always do
                               marker.set_tooltip :text => 'This is sparta!', :show => :always
-                            }
+                            end
 
-      assert_output_fixture :marker_set_tooltip_show_false, 
-                            script.record_for_test{
+      assert_eschaton_output :marker_set_tooltip_show_false do
                               marker.set_tooltip :text => 'This is sparta!', :show => false
-                            }
+                            end
       
-      assert_output_fixture :marker_set_tooltip_default_with_partial, 
-                            script.record_for_test{
+      assert_eschaton_output :marker_set_tooltip_default_with_partial do
                               marker.set_tooltip :partial => 'spot_information'
-                            }
+                            end
 
-     assert_output_fixture :marker_set_tooltip_default_with_partial, 
-                           script.record_for_test{
+     assert_eschaton_output :marker_set_tooltip_default_with_partial do
                              marker.set_tooltip :partial => 'spot_information', :show => :on_mouse_hover
-                           }
+                           end
                            
       assert marker.has_tooltip?                                          
     end
@@ -376,20 +330,17 @@ class MarkerTest < Test::Unit::TestCase
                               :tooltip => {:text => 'tooltip'}
       
       # If you update and there is no tooltip it will use the default behavior
-      assert_output_fixture :marker_set_tooltip_default,
-                            script.record_for_test{
+      assert_eschaton_output :marker_set_tooltip_default do
                               marker.update_tooltip :text => 'This is sparta!'
-                            }
+                            end
 
-      assert_output_fixture 'tooltip_marker.updateHtml("This is sparta!");',
-                            script.record_for_test{
+      assert_eschaton_output 'tooltip_marker.updateHtml("This is sparta!");' do
                               marker.update_tooltip :text => 'This is sparta!'
-                            }
+                            end
 
-      assert_output_fixture 'tooltip_marker.updateHtml("test output for render");',
-                             script.record_for_test{
+      assert_eschaton_output 'tooltip_marker.updateHtml("test output for render");' do
                                marker.update_tooltip :partial => 'This is sparta!'
-                             }
+                             end
 
       assert marker.has_tooltip?
     end
@@ -400,10 +351,9 @@ class MarkerTest < Test::Unit::TestCase
       marker = Google::Marker.new :var => :marker, :location => {:latitude => -33.947, :longitude => 18.462},
                                   :tooltip => {:text => 'This is sparta!'}
 
-      assert_output_fixture 'tooltip_marker.show();', 
-                             script.record_for_test{
+      assert_eschaton_output 'tooltip_marker.show();' do
                                marker.tooltip.show!
-                             }
+                             end
     end    
   end
 
@@ -412,27 +362,24 @@ class MarkerTest < Test::Unit::TestCase
       marker = Google::Marker.new :var => :marker, :location => {:latitude => -33.947, :longitude => 18.462},
                                   :tooltip => {:text => 'This is sparta!'}
 
-      assert_output_fixture 'tooltip_marker.hide();', 
-                             script.record_for_test{
+      assert_eschaton_output 'tooltip_marker.hide();' do
                                marker.tooltip.hide!
-                             }
+                             end
     end    
   end
 
   def test_draggable
     with_eschaton do |script|
-      assert_output_fixture 'marker = new GMarker(existing_location, {draggable: false});',
-                            script.record_for_test {
+      assert_eschaton_output 'marker = new GMarker(existing_location, {draggable: false});' do
                               marker = Google::Marker.new :var => :marker, :location => :existing_location
                               assert_false marker.draggable?
-                            }
+                            end
 
-      assert_output_fixture :marker_draggable,
-                            script.record_for_test {
+      assert_eschaton_output :marker_draggable do
                               marker = Google::Marker.new :var => :marker, :location => :existing_location, :title => 'Draggable marker!', 
                                                           :draggable => true
                               assert marker.draggable?
-                            }
+                            end
     end    
   end
 
@@ -440,13 +387,12 @@ class MarkerTest < Test::Unit::TestCase
     with_eschaton do |script|
       marker = self.default_marker
       
-      assert_output_fixture :marker_mouse_over,
-                            script.record_for_test{ 
+      assert_eschaton_output :marker_mouse_over do
                               marker.mouse_over{|script|
                                 script.comment "This is some test code!"
                                 script.alert("Hello from marker drop!")
                               }
-                            }
+                            end
     end
   end
 
@@ -454,41 +400,37 @@ class MarkerTest < Test::Unit::TestCase
     with_eschaton do |script|
       marker = self.default_marker
       
-      assert_output_fixture :marker_mouse_off,
-                            script.record_for_test{ 
+      assert_eschaton_output :marker_mouse_off do
                               marker.mouse_off{|script|
                                 script.comment "This is some test code!"
                                 script.alert("Hello from marker drop!")
                               }
-                            }
+                            end
     end
   end
 
   def test_move_to
     with_eschaton do |script|            
       marker = self.default_marker
-      assert_output_fixture 'marker.setLatLng(new GLatLng(-33.947, 18.562));', 
-                             script.record_for_test{
+      assert_eschaton_output 'marker.setLatLng(new GLatLng(-33.947, 18.562));' do
                                marker.move_to :latitude => -33.947, :longitude => 18.562
-                             }
+                             end
                              
       marker.set_tooltip :text => "This is sparta!"
 
-      assert_output_fixture 'marker.setLatLng(new GLatLng(-33.947, 18.562));
-                             tooltip_marker.redraw(true);', 
-                            script.record_for_test{
+      assert_eschaton_output 'marker.setLatLng(new GLatLng(-33.947, 18.562));
+                             tooltip_marker.redraw(true);' do
                               marker.move_to :latitude => -33.947, :longitude => 18.562
-                            }
+                            end
        
       marker.circle! 
                             
-      assert_output_fixture 'marker.setLatLng(new GLatLng(-33.947, 18.562));
+      assert_eschaton_output 'marker.setLatLng(new GLatLng(-33.947, 18.562));
                              tooltip_marker.redraw(true);
                              map.removeOverlay(circle_marker)
-                             circle_marker = drawCircle(new GLatLng(-33.947, 18.562), 1.5, 40, null, 2, null, "#0055ff", null);', 
-                            script.record_for_test{
+                             circle_marker = drawCircle(new GLatLng(-33.947, 18.562), 1.5, 40, null, 2, null, "#0055ff", null);' do
                               marker.move_to :latitude => -33.947, :longitude => 18.562
-                            }                            
+                            end
     end    
   end
   
@@ -496,17 +438,16 @@ class MarkerTest < Test::Unit::TestCase
     with_eschaton do |script|
       marker = self.default_marker
   
-      assert_output_fixture 'function marker_infowindowopen(marker){
+      assert_eschaton_output 'function marker_infowindowopen(marker){
                                return GEvent.addListener(marker, "infowindowopen", function() {
                                  alert("Info window opened on marker!");
                                });
                              }
-                             marker_infowindowopen_event = marker_infowindowopen(marker);', 
-                            script.record_for_test {
+                             marker_infowindowopen_event = marker_infowindowopen(marker);' do
                               marker.after_info_window_opened do |script|
                                 script.alert('Info window opened on marker!')
                               end
-                            }
+                            end
     end
   end  
   

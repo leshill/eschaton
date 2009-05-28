@@ -60,7 +60,7 @@ class JavascriptObjectTest < Test::Unit::TestCase
       object.set_options_on('map', {:zoom => 15, :controls => :small_map})
       object.enable_dragging!
 
-      assert_output_fixture 'map.setZoom(12);
+      assert_eschaton_output 'map.setZoom(12);
                              map.setZoom(12);
                              map.zoomIn();
                              map.zoomOut();
@@ -86,7 +86,7 @@ class JavascriptObjectTest < Test::Unit::TestCase
       
       object << "var i = 1;"
       
-      assert_output_fixture "var i = 1;", script
+      assert_eschaton_output "var i = 1;", script
     end
   end
   

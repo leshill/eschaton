@@ -8,36 +8,31 @@ class PaneTest < Test::Unit::TestCase
     with_eschaton do |script|
       map = Google::Map.new
       
-      assert_output_fixture 'pane = new GooglePane({cssClass: "pane", id: "pane", position: new GControlPosition(G_ANCHOR_TOP_LEFT, new GSize(10, 10)), text: "Poly Jean Harvey is indeed a unique women"});
-                             map.addControl(pane);',
-                            script.record_for_test {
+      assert_eschaton_output 'pane = new GooglePane({cssClass: "pane", id: "pane", position: new GControlPosition(G_ANCHOR_TOP_LEFT, new GSize(10, 10)), text: "Poly Jean Harvey is indeed a unique women"});
+                             map.addControl(pane);' do
                               map.add_control Google::Pane.new(:text => 'Poly Jean Harvey is indeed a unique women')
-                            }
-                            
-      assert_output_fixture 'pane = new GooglePane({cssClass: "pane", id: "pane", position: new GControlPosition(G_ANCHOR_TOP_RIGHT, new GSize(10, 10)), text: "Poly Jean Harvey is indeed a unique women"});
-                             map.addControl(pane);',                            
-                            script.record_for_test {
+                            end
+
+      assert_eschaton_output 'pane = new GooglePane({cssClass: "pane", id: "pane", position: new GControlPosition(G_ANCHOR_TOP_RIGHT, new GSize(10, 10)), text: "Poly Jean Harvey is indeed a unique women"});
+                             map.addControl(pane);' do
                               map.add_control Google::Pane.new(:text => 'Poly Jean Harvey is indeed a unique women', :anchor => :top_right)
-                            }
+                            end
                             
-      assert_output_fixture 'pane = new GooglePane({cssClass: "pane", id: "pane", position: new GControlPosition(G_ANCHOR_TOP_RIGHT, new GSize(10, 30)), text: "Poly Jean Harvey is indeed a unique women"});
-                             map.addControl(pane);',                            
-                            script.record_for_test {                            
+      assert_eschaton_output 'pane = new GooglePane({cssClass: "pane", id: "pane", position: new GControlPosition(G_ANCHOR_TOP_RIGHT, new GSize(10, 30)), text: "Poly Jean Harvey is indeed a unique women"});
+                             map.addControl(pane);' do
                               map.add_control Google::Pane.new(:text => 'Poly Jean Harvey is indeed a unique women', :anchor => :top_right,
                                                                :offset => [10, 30])
-                            }
+                            end
                             
-      assert_output_fixture 'pane = new GooglePane({cssClass: "green", id: "pane", position: new GControlPosition(G_ANCHOR_TOP_LEFT, new GSize(10, 10)), text: "Poly Jean Harvey is indeed a unique women"});
-                             map.addControl(pane);',                            
-                            script.record_for_test {
+      assert_eschaton_output 'pane = new GooglePane({cssClass: "green", id: "pane", position: new GControlPosition(G_ANCHOR_TOP_LEFT, new GSize(10, 10)), text: "Poly Jean Harvey is indeed a unique women"});
+                             map.addControl(pane);' do
                               map.add_control Google::Pane.new(:text => 'Poly Jean Harvey is indeed a unique women', :css_class => :green)
-                            }
+                            end
                             
-      assert_output_fixture 'pane = new GooglePane({cssClass: "green", id: "pane", position: new GControlPosition(G_ANCHOR_TOP_LEFT, new GSize(10, 10)), text: "test output for render"});
-                            map.addControl(pane);',                            
-                            script.record_for_test {
+      assert_eschaton_output 'pane = new GooglePane({cssClass: "green", id: "pane", position: new GControlPosition(G_ANCHOR_TOP_LEFT, new GSize(10, 10)), text: "test output for render"});
+                            map.addControl(pane);' do
                               map.add_control Google::Pane.new(:partial => 'jump_to', :css_class => :green)
-                            }
+                            end
     end
   end
   
@@ -45,15 +40,13 @@ class PaneTest < Test::Unit::TestCase
     with_eschaton do |script|
       output = 'my_pane = new GooglePane({cssClass: "pane", id: "my_pane", position: new GControlPosition(G_ANCHOR_TOP_LEFT, new GSize(10, 10)), text: "Poly Jean Harvey is indeed a unique women"});'
      
-      assert_output_fixture output,
-                            script.record_for_test {
+      assert_eschaton_output output do
                               Google::Pane.new(:var => :my_pane, :text => 'Poly Jean Harvey is indeed a unique women')
-                            }
+                            end
 
-      assert_output_fixture output, 
-                            script.record_for_test {
+      assert_eschaton_output output do
                               Google::Pane.new(:var => 'my_pane', :text => 'Poly Jean Harvey is indeed a unique women')
-                            }
+                            end
     end
   end
   
@@ -61,17 +54,17 @@ class PaneTest < Test::Unit::TestCase
     with_eschaton do
       pane = Google::Pane.new(:text => 'Poly Jean Harvey is indeed a unique women')
 
-      assert_output_fixture 'Element.update("pane", "This is new html");',
+      assert_eschaton_output 'Element.update("pane", "This is new html");',
                             with_eschaton  {
                               pane.replace_html :text => "This is new html" 
                             }
 
-      assert_output_fixture 'Element.update("pane", "This is new html");',
+      assert_eschaton_output 'Element.update("pane", "This is new html");',
                             with_eschaton {
                               pane.replace_html "This is new html" 
                             }
 
-      assert_output_fixture 'Element.update("pane", "test output for render");',
+      assert_eschaton_output 'Element.update("pane", "test output for render");',
                             with_eschaton {
                               pane.replace_html :partial => 'new_html' 
                             }

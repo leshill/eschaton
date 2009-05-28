@@ -13,7 +13,7 @@ class LogTest < Test::Unit::TestCase
 
 
   def test_write_to_script
-    assert_output_fixture 'GLog.writeHtml("This is a log message!");
+    assert_eschaton_output 'GLog.writeHtml("This is a log message!");
                            GLog.writeHtml("Line 1<br/>Line 2");',
                           with_eschaton {
                             Google::Log.write("This is a log message!")

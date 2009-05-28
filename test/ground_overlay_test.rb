@@ -10,27 +10,24 @@ class GroundOverlayTest < Test::Unit::TestCase
                 ground_overlay = new GGroundOverlay('http://battlestar/images/cylon_base_star.png', bounds);"
       
       # Using explicit points for Bounds
-      assert_output_fixture output,
-                            script.record_for_test {
+      assert_eschaton_output output do
                               Google::GroundOverlay.new :image => "http://battlestar/images/cylon_base_star.png",
                                                         :south_west_point => [-33.947, 18.462],
                                                         :north_east_point => [-34.947, 19.462]
-                             }
+                             end
 
       # Using a bounds object
-      assert_output_fixture output,
-                            script.record_for_test {
+      assert_eschaton_output output do
                               Google::GroundOverlay.new :image => "http://battlestar/images/cylon_base_star.png",
                                                         :bounds => Google::Bounds.new(:south_west_point => [-33.947, 18.462], 
                                                                                       :north_east_point => [-34.947, 19.462])
-                            }
+                            end
 
       # using Bounds in array form
-      assert_output_fixture output,
-                            script.record_for_test {
+      assert_eschaton_output output do
                               Google::GroundOverlay.new :image => "http://battlestar/images/cylon_base_star.png",
                                                         :bounds => [[-33.947, 18.462], [-34.947, 19.462]]
-                            }
+                            end
     end
   end
 

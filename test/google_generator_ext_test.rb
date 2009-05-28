@@ -11,7 +11,7 @@ class GoogleGeneratorExtTest < Test::Unit::TestCase
         map = Google::Map.new :center => :cape_town, :zoom => 9
       end
 
-      assert_output_fixture "var map;
+      assert_eschaton_output "var map;
                              jQuery(document).ready(function() {
                              window.onunload = GUnload;
                              if (GBrowserIsCompatible()) {
@@ -52,7 +52,7 @@ class GoogleGeneratorExtTest < Test::Unit::TestCase
       generator.comment "Map script"
     end
 
-    assert_output_fixture "/* Before 1 */
+    assert_eschaton_output "/* Before 1 */
                            /* Before 2 */
                            jQuery(document).ready(function() {
                            window.onunload = GUnload;
@@ -69,57 +69,52 @@ class GoogleGeneratorExtTest < Test::Unit::TestCase
   def test_google_map_script
     with_eschaton do |script|
       
-      assert_output_fixture :google_map_script_no_body, script.record_for_test {
-                                                             script.google_map_script {}
-                                                           }
+      assert_eschaton_output :google_map_script_no_body do
+                              script.google_map_script {}
+                            end
 
-      assert_output_fixture :google_map_script_with_body, script.record_for_test {
-                                                            script.google_map_script do
-                                                              script.comment "This is some test code!"
-                                                              script.alert("Hello!")
-                                                            end
-                                                          }
-      
+      assert_eschaton_output :google_map_script_with_body do
+                              script.google_map_script do
+                                script.comment "This is some test code!"
+                                script.alert("Hello!")
+                              end
+                            end
     end
   end
   
   def test_set_coordinate_elements
     with_eschaton do |script|
       
-      assert_output_fixture "$('latitude').value = location.lat();
-                             $('longitude').value = location.lng();", 
-                            script.record_for_test {
+      assert_eschaton_output "$('latitude').value = location.lat();
+                             $('longitude').value = location.lng();" do
                               script.set_coordinate_elements :location => :location
-                            }
+                            end
       
       map = Google::Map.new :center => {:latitude => -35.0, :longitude => 19.0}
       
       # Testing with map center    
-      assert_output_fixture "$('latitude').value = map.getCenter().lat();
-                             $('longitude').value = map.getCenter().lng();", 
-                            script.record_for_test {
+      assert_eschaton_output "$('latitude').value = map.getCenter().lat();
+                             $('longitude').value = map.getCenter().lng();" do
                               script.set_coordinate_elements :location => map.center
-                            }
+                            end
 
       marker = map.add_marker(:var => :marker, :location => map.center)
       
       # Testing with a marker location
-      assert_output_fixture "$('latitude').value = marker.getLatLng().lat();
-                             $('longitude').value = marker.getLatLng().lng();", 
-                            script.record_for_test {
+      assert_eschaton_output "$('latitude').value = marker.getLatLng().lat();
+                             $('longitude').value = marker.getLatLng().lng();" do
                               script.set_coordinate_elements :location => marker.location
-                            }
+                            end
 
       # With specific element names
-      assert_output_fixture "$('location_latitude').value = location.lat();
-                             $('location_longitude').value = location.lng();", 
-                            script.record_for_test {
+      assert_eschaton_output "$('location_latitude').value = location.lat();
+                             $('location_longitude').value = location.lng();" do
                               script.set_coordinate_elements :location => :location,
                                                              :latitude_element => :location_latitude,
                                                              :longitude_element => :location_longitude
-                            }
+                            end
     end    
-    
+
   end
 
 end

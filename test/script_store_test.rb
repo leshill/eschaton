@@ -14,10 +14,10 @@ class ScriptStoreTest < Test::Unit::TestCase
     assert_blank MyStore.before_map_script.to_s
 
     MyStore.before_map_script << 'var 1 = 1;'
-    assert_output_fixture 'var 1 = 1;', MyStore.before_map_script.to_s
+    assert_eschaton_output 'var 1 = 1;', MyStore.before_map_script.to_s
 
     MyStore.before_map_script << 'var 2 = 2;'
-    assert_output_fixture 'var 1 = 1;
+    assert_eschaton_output 'var 1 = 1;
                            var 2 = 2;',
                           MyStore.before_map_script.to_s
 
@@ -34,7 +34,7 @@ class ScriptStoreTest < Test::Unit::TestCase
       script << 'var 1 = 1;'
     end
 
-    assert_output_fixture '/* This is before map script */
+    assert_eschaton_output '/* This is before map script */
                            var 1 = 1;',
                           MyStore.before_map_script.to_s
 

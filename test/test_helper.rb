@@ -13,7 +13,7 @@ class Test::Unit::TestCase
     assert_equal return_value.to_sym, javascript_call
   end
   
-  def assert_output_fixture(output_to_compare, generator, message = nil)  
+  def assert_eschaton_output(output_to_compare, generator = nil, message = nil, &block)  
     if output_to_compare.is_a?(Symbol)
       fixture_base = self.output_fixture_base || '.'
       fixture_file = "#{fixture_base}/output_fixtures/#{output_to_compare}"
@@ -21,7 +21,9 @@ class Test::Unit::TestCase
       output_to_compare = File.read fixture_file
     end
 
-    output = if generator.is_a?(String)
+    output = if block_given?
+               Eschaton.global_script.record_for_test(&block).generate
+             elsif generator.is_a?(String)
                generator
              else
                generator.generate

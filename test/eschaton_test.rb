@@ -24,12 +24,11 @@ class EschatonTest < Test::Unit::TestCase
 
   def test_write_to_global_script    
     with_eschaton do |script|
-      assert_output_fixture 'One!
-                             Two!', 
-                             script.record_for_test {
+      assert_eschaton_output 'One!
+                             Two!' do
                                TestJavascriptObject.write_one
                                TestJavascriptObject.new.write_two
-                             }
+                             end
     end
   end
 

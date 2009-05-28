@@ -6,44 +6,40 @@ class JavascriptVariableTest < Test::Unit::TestCase
 
   def test_new_variable
     with_eschaton do |script|
-      assert_output_fixture 'var points = new Array();
+      assert_eschaton_output 'var points = new Array();
                              points.push("One");
-                             points.push("Two");',
-                            script.record_for_test {
+                             points.push("Two");' do
                               points = Eschaton::JavascriptVariable.new(:name => :points, :value => "new Array()")
                               points.push("One")
                               points.push("Two")                              
-                            }      
+                            end
     end
   end
 
   def test_existing_variable
     with_eschaton do |script|
-      assert_output_fixture 'points.push("One");
-                             points.push("Two");',
-                            script.record_for_test {
+      assert_eschaton_output 'points.push("One");
+                             points.push("Two");'do
                               points = Eschaton::JavascriptVariable.existing(:name => :points)
                               points.push("One")
                               points.push("Two")                              
-                            }      
+                            end
     end
   end
 
   def test_method_translation
     with_eschaton do |script|
-      assert_output_fixture 'var points = new Array();
+      assert_eschaton_output 'var points = new Array();
                              points.push("One");
                              points.push("Two");
                              points.translateToCamelCase();
-                             points.withTwoArguments("One", 2);',
-                            script.record_for_test {
+                             points.withTwoArguments("One", 2);' do
                               points = Eschaton::JavascriptVariable.new(:name => :points, :value => "new Array()")
-
                               points.push("One")
                               points.push("Two")
                               points.translate_to_camel_case!
                               points.with_two_arguments("One", 2)
-                            }
+                            end
     end
   end
   
@@ -55,20 +51,17 @@ class JavascriptVariableTest < Test::Unit::TestCase
       assert_returned_javascript 'points["Hello"]', points["Hello"]
       assert_returned_javascript 'points[a_marker]', points[:a_marker]
 
-      assert_output_fixture 'points[1] = 1;', 
-                            script.record_for_test {
+      assert_eschaton_output 'points[1] = 1;' do
                               points[1] = 1
-                            }
+                            end
 
-      assert_output_fixture 'points[1] = "Hello";', 
-                            script.record_for_test {
+      assert_eschaton_output 'points[1] = "Hello";' do
                               points[1] = "Hello"
-                            }
+                            end
 
-      assert_output_fixture 'points[1] = a_marker;', 
-                            script.record_for_test {
+      assert_eschaton_output 'points[1] = a_marker;' do
                               points[1] = :a_marker
-                            }
+                            end
     end    
   end
 

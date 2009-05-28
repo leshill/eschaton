@@ -14,14 +14,13 @@ class UrlHelperTest < Test::Unit::TestCase
     with_eschaton do |script|
       polygon = Google::Polygon.new :vertices => @decoded_polygon_vertices
 
-      assert_output_fixture "var url_vertices = '';
+      assert_eschaton_output "var url_vertices = '';
                              for(var i = 0; i < polygon.getVertexCount(); i++){
                              url_vertices += '[' + polygon.getVertex(i).toUrlValue() + '],';
                              }
-                             url_vertices = url_vertices.substring(0, url_vertices.length - 1);", 
-                             script.record_for_test {
+                             url_vertices = url_vertices.substring(0, url_vertices.length - 1);" do
                                assert_equal '#url_vertices', Google::UrlHelper.encode_vertices(polygon)
-                             }
+                             end
     end
   end
   

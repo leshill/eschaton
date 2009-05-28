@@ -48,14 +48,14 @@ class MapObjectTest < Test::Unit::TestCase
     @map_object.listen_to :event => :click do
     end
 
-    assert_output_fixture :map_object_listen_to_no_args, @script
+    assert_eschaton_output :map_object_listen_to_no_args, @script
   end
 
   def test_map_object_listen_to_with_args
     @map_object.listen_to :event => :click, :with => [:overlay, :location] do
     end
 
-    assert_output_fixture :map_object_listen_to_with_args, @script
+    assert_eschaton_output :map_object_listen_to_with_args, @script
   end
 
   def test_map_object_listen_to_with_body
@@ -65,7 +65,7 @@ class MapObjectTest < Test::Unit::TestCase
       script.alert("Hello from test Object!")
     end
     
-    assert_output_fixture :map_object_listen_to_with_body, @script
+    assert_eschaton_output :map_object_listen_to_with_body, @script
   end
 
 end

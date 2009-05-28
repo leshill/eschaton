@@ -101,10 +101,9 @@ class OptionsHelperTest < Test::Unit::TestCase
     assert_equal 'test output for render', Google::OptionsHelper.to_content(:partial => 'testing')
     
     with_eschaton do |script|  
-      assert_output_fixture 'var javascript = "location is " + location;',
-                            script.record_for_test {
+      assert_eschaton_output 'var javascript = "location is " + location;' do
                               assert_equal :javascript, Google::OptionsHelper.to_content(:javascript => '"location is " + location')      
-                            }
+                            end
     end
   end
 
