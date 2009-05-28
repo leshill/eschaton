@@ -29,25 +29,17 @@ task :stats do
   CodeStatistics.new(*STATS_DIRECTORIES).to_s
 end
 
-def clear_docs
-  FileUtils.rm_rf("doc")
-end
-
 desc 'Generate YARD documentation for the eschaton plugin.'
-YARD::Rake::YardocTask.new(:ydoc) do |t|
-  clear_docs
-  
+YARD::Rake::YardocTask.new(:ydoc) do |t|  
   t.files = ['lib/**/*.rb', "slices/*/**/*.rb"]
-  t.options = ['-r', 'README.rdoc', '-d', 'doc']  
+  t.options = ['-r', 'README.rdoc']  
 end
 
 desc 'Generate documentation for the eschaton plugin.'
 Rake::RDocTask.new(:rdoc) do |rdoc|
-  clear_docs
-    
   rdoc.rdoc_dir = 'doc'
   rdoc.title    = 'eschaton'
-  rdoc.options << '--line-numbers' << '--inline-source'
+  rdoc.options << '--line-numbers' << '--inline-source' << "--force-update"
   rdoc.rdoc_files.include('README.rdoc')
   rdoc.main = "README.rdoc"
 
@@ -56,7 +48,7 @@ Rake::RDocTask.new(:rdoc) do |rdoc|
 end
 
 desc 'Opens documentation for the eschaton plugin.'
-task :open_doc do |rdoc|
+task :open_doc do
   `open doc/index.html`
 end
 
