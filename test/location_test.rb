@@ -5,7 +5,7 @@ Test::Unit::TestCase.output_fixture_base = File.dirname(__FILE__)
 class LocationTest < Test::Unit::TestCase
 
   def test_initialize
-    Eschaton.with_global_script do |script|
+    with_eschaton do |script|
 
       location = Google::Location.new(:latitude => -34.947, :longitude => 19.462)
       location_output = "new GLatLng(-34.947, 19.462)"

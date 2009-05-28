@@ -32,46 +32,73 @@ class JavascriptObjectTest < Test::Unit::TestCase
                 ['map', {:zoom => 15, :controls => :small_map}].to_js_arguments
   end
 
-  def test_method_to_js
-    Eschaton.with_global_script do |script|
-      obj = Eschaton::JavascriptObject.new(:var => 'map')
+  def test_new
+    object = Eschaton::JavascriptObject.new(:var => :map)
 
-      obj.zoom = 12
-      obj.set_zoom 12
-      obj.zoom_in
-      obj.zoom_out
-      obj.return_to_saved_position
-      obj.open_info_window(:location, "Howdy!")
-      obj.update_markers [1, 2, 3]
-      obj.set_options_on('map', {:zoom => 15, :controls => :small_map})
-      obj.enable_dragging!
-      
-      assert_output_fixture :method_to_js, script
+    assert_equal :map, object.var
+    assert object.create_var?    
+  end
+
+  def test_existing
+    object = Eschaton::JavascriptObject.existing(:var => :map)
+
+    assert_equal :map, object.var
+    assert_false object.create_var?    
+  end
+
+  def test_translation
+    with_eschaton do |script|
+      object = Eschaton::JavascriptObject.new(:var => :map)
+
+      object.zoom = 12
+      object.set_zoom 12
+      object.zoom_in
+      object.zoom_out
+      object.return_to_saved_position
+      object.open_info_window(:location, "Howdy!")
+      object.update_markers [1, 2, 3]
+      object.set_options_on('map', {:zoom => 15, :controls => :small_map})
+      object.enable_dragging!
+
+      assert_output_fixture 'map.setZoom(12);
+                             map.setZoom(12);
+                             map.zoomIn();
+                             map.zoomOut();
+                             map.returnToSavedPosition();
+                             map.openInfoWindow(location, "Howdy!");
+                             map.updateMarkers([1, 2, 3]);
+                             map.setOptionsOn("map", {"controls": "small_map", "zoom": 15});
+                             map.enableDragging();', 
+                             script
     end
   end
-  
-  def test_existing
-    obj = Eschaton::JavascriptObject.existing(:var => 'map')
-
-    assert_equal 'map', obj.var
-    assert_false obj.create_var
-    assert_false obj.create_var?    
-  end
-  
+    
   def test_script
     script = Eschaton.javascript_generator
-    obj = Eschaton::JavascriptObject.existing(:var => 'map', :script => script)
+    object = Eschaton::JavascriptObject.existing(:var => 'map', :script => script)
     
-    assert script, obj.script
+    assert script, object.script
   end
   
   def test_add_to_script
-    Eschaton.with_global_script do |script|
-      obj = Eschaton::JavascriptObject.new
+    with_eschaton do |script|
+      object = Eschaton::JavascriptObject.new
       
-      obj << "var i = 1;"
+      object << "var i = 1;"
       
-      assert_equal "var i = 1;", script.generate
+      assert_output_fixture "var i = 1;", script
+    end
+  end
+  
+  def test_question_mark_translation
+    with_eschaton do |script|
+      object = Eschaton::JavascriptObject.new(:var => :array)
+
+      return_value = object.index_of?("A value")
+
+      assert return_value.is_a?(Symbol)
+      assert_equal 'array.indexOf("A value")'.to_sym, return_value    
+      assert_blank script.generate      
     end
   end
     

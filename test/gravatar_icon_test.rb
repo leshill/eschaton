@@ -5,7 +5,7 @@ Test::Unit::TestCase.output_fixture_base = File.dirname(__FILE__)
 class GravatarIconTest < Test::Unit::TestCase
 
   def test_initialize
-    Eschaton.with_global_script do |script|
+    with_eschaton do |script|
       assert_output_fixture :gravatar, 
                              script.record_for_test {
                                Google::GravatarIcon.new :email_address => 'yawningman@eschaton.com'

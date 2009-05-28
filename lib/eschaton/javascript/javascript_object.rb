@@ -7,7 +7,7 @@ module Eschaton
   class JavascriptObject
     extend Eschaton::ReadableAttributes
 
-    attr_reader :var, :create_var
+    attr_reader :var
 
     # ==== Options:
     # * +var+ - Optional. The name of the javascript variable, defaulted to a random name.
@@ -31,8 +31,10 @@ module Eschaton
       self.new(options)
     end
 
-    alias create_var? create_var
-    
+    def create_var?
+      @create_var
+    end
+
     # Converts the given +method+ and +args+ to a javascript method call with arguments.  
     def method_to_js(method, *args)
       method_name = method.to_s 

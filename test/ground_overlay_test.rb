@@ -5,7 +5,7 @@ Test::Unit::TestCase.output_fixture_base = File.dirname(__FILE__)
 class GroundOverlayTest < Test::Unit::TestCase
 
   def test_initialize
-    Eschaton.with_global_script do |script|
+    with_eschaton do |script|
       output = "bounds = new GLatLngBounds(new GLatLng(-33.947, 18.462), new GLatLng(-34.947, 19.462));
                 ground_overlay = new GGroundOverlay('http://battlestar/images/cylon_base_star.png', bounds);"
       

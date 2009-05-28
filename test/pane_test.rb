@@ -5,7 +5,7 @@ Test::Unit::TestCase.output_fixture_base = File.dirname(__FILE__)
 class PaneTest < Test::Unit::TestCase
 
   def test_initialize
-    Eschaton.with_global_script do |script|
+    with_eschaton do |script|
       map = Google::Map.new
       
       assert_output_fixture 'pane = new GooglePane({cssClass: "pane", id: "pane", position: new GControlPosition(G_ANCHOR_TOP_LEFT, new GSize(10, 10)), text: "Poly Jean Harvey is indeed a unique women"});
@@ -42,7 +42,7 @@ class PaneTest < Test::Unit::TestCase
   end
   
   def test_pane_id
-    Eschaton.with_global_script do |script|
+    with_eschaton do |script|
       output = 'my_pane = new GooglePane({cssClass: "pane", id: "my_pane", position: new GControlPosition(G_ANCHOR_TOP_LEFT, new GSize(10, 10)), text: "Poly Jean Harvey is indeed a unique women"});'
      
       assert_output_fixture output,
@@ -58,21 +58,21 @@ class PaneTest < Test::Unit::TestCase
   end
   
   def test_replace_html
-    Eschaton.with_global_script do
+    with_eschaton do
       pane = Google::Pane.new(:text => 'Poly Jean Harvey is indeed a unique women')
 
       assert_output_fixture 'Element.update("pane", "This is new html");',
-                            Eschaton.with_global_script  {
+                            with_eschaton  {
                               pane.replace_html :text => "This is new html" 
                             }
 
       assert_output_fixture 'Element.update("pane", "This is new html");',
-                            Eschaton.with_global_script {
+                            with_eschaton {
                               pane.replace_html "This is new html" 
                             }
 
       assert_output_fixture 'Element.update("pane", "test output for render");',
-                            Eschaton.with_global_script {
+                            with_eschaton {
                               pane.replace_html :partial => 'new_html' 
                             }
     end    

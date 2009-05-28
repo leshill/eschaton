@@ -26,6 +26,15 @@ module Eschaton
         self << "var #{self.var} = #{options[:value]};"
       end
     end
+
+    def [](key)
+      "#{self.var}[#{key.to_js}]".to_sym
+    end
+
+    def []=(key, value)
+      self << "#{self[key]} = #{value.to_js};"
+    end
+    
   end
 
 end

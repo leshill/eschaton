@@ -11,7 +11,7 @@ class UrlHelperTest < Test::Unit::TestCase
   end
 
   def test_encode_polygon
-    Eschaton.with_global_script do |script|
+    with_eschaton do |script|
       polygon = Google::Polygon.new :vertices => @decoded_polygon_vertices
 
       assert_output_fixture "var url_vertices = '';

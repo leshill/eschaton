@@ -5,7 +5,7 @@ Test::Unit::TestCase.output_fixture_base = File.dirname(__FILE__)
 class BoundsTest < Test::Unit::TestCase
 
   def test_initialize
-    Eschaton.with_global_script do |script|      
+    with_eschaton do |script|      
       assert_output_fixture "bounds = new GLatLngBounds(new GLatLng(-34.947, 19.462), new GLatLng(-35.947, 20.462));",
                             script.record_for_test {
                               Google::Bounds.new(:south_west_point => [-34.947, 19.462], :north_east_point => [-35.947, 20.462])
@@ -20,7 +20,7 @@ class BoundsTest < Test::Unit::TestCase
   end
 
   def test_extend
-    Eschaton.with_global_script do |script|
+    with_eschaton do |script|
       bounds = Google::Bounds.new
 
       assert_output_fixture "bounds.extend(marker.getLatLng());",

@@ -9,7 +9,7 @@ class MarkerTest < Test::Unit::TestCase
   end
 
   def test_initialize
-    Eschaton.with_global_script do |script|
+    with_eschaton do |script|
       assert_output_fixture 'marker = new GMarker(new GLatLng(-33.947, 18.462), {draggable: false});', 
                              script.record_for_test {
                                 marker = self.default_marker
@@ -40,7 +40,7 @@ class MarkerTest < Test::Unit::TestCase
   end
 
   def test_initialize_with_gravatar
-    Eschaton.with_global_script do |script|
+    with_eschaton do |script|
       assert_output_fixture :marker_gravatar, 
                              script.record_for_test {
                                Google::Marker.new :var => :marker, :location => {:latitude => -33.947, :longitude => 18.462},
@@ -77,7 +77,7 @@ class MarkerTest < Test::Unit::TestCase
   end
 
   def test_initialize_with_tooltip
-    Eschaton.with_global_script do |script|
+    with_eschaton do |script|
       map = Google::Map.new
       assert_output_fixture :marker_tooltip, 
                              script.record_for_test {
@@ -106,7 +106,7 @@ class MarkerTest < Test::Unit::TestCase
   end
 
   def test_location
-    Eschaton.with_global_script do |script|
+    with_eschaton do |script|
       marker = self.default_marker
       assert_equal "marker.getLatLng()", marker.location
       
@@ -119,7 +119,7 @@ class MarkerTest < Test::Unit::TestCase
   end
 
   def test_marker_open_info_window
-    Eschaton.with_global_script do |script|
+    with_eschaton do |script|
       marker = self.default_marker
 
       assert_output_fixture "jQuery.get('/location/show/1?location%5Blatitude%5D=' + marker.getLatLng().lat() + '&location%5Blongitude%5D=' + marker.getLatLng().lng() + '', function(data) {
@@ -142,7 +142,7 @@ class MarkerTest < Test::Unit::TestCase
   end
   
   def test_marker_cache_info_window
-    Eschaton.with_global_script do |script|
+    with_eschaton do |script|
       marker = self.default_marker
 
       assert_output_fixture "jQuery.get('/location/show/1?location%5Blatitude%5D=' + marker.getLatLng().lat() + '&location%5Blongitude%5D=' + marker.getLatLng().lng() + '', function(data) {
@@ -165,7 +165,7 @@ class MarkerTest < Test::Unit::TestCase
   end  
 
   def test_open_cached_info_window
-    Eschaton.with_global_script do |script|
+    with_eschaton do |script|
       marker = self.default_marker
 
       assert_output_fixture "GEvent.trigger(marker, 'click');", 
@@ -178,7 +178,7 @@ class MarkerTest < Test::Unit::TestCase
   
 
   def test_click
-    Eschaton.with_global_script do |script|
+    with_eschaton do |script|
       marker = self.default_marker
 
       # without body
@@ -205,7 +205,7 @@ class MarkerTest < Test::Unit::TestCase
   end
 
   def test_when_picked_up
-    Eschaton.with_global_script do |script|
+    with_eschaton do |script|
       marker = self.default_marker
       
       assert_output_fixture :marker_when_picked_up,
@@ -219,7 +219,7 @@ class MarkerTest < Test::Unit::TestCase
   end
 
   def test_when_being_dragged
-    Eschaton.with_global_script do |script|
+    with_eschaton do |script|
       marker = self.default_marker
       
       assert_output_fixture :marker_when_being_dragged,
@@ -233,7 +233,7 @@ class MarkerTest < Test::Unit::TestCase
   end
   
   def test_when_dropped
-    Eschaton.with_global_script do |script|
+    with_eschaton do |script|
       marker = self.default_marker
       
       test_output = script.record_for_test do 
@@ -250,7 +250,7 @@ class MarkerTest < Test::Unit::TestCase
   end
   
   def test_show_map_blowup
-    Eschaton.with_global_script do |script|
+    with_eschaton do |script|
       marker = self.default_marker
       
       # Default with hash location
@@ -280,7 +280,7 @@ class MarkerTest < Test::Unit::TestCase
   end
   
   def test_change_icon
-    Eschaton.with_global_script do |script|
+    with_eschaton do |script|
       marker = self.default_marker
       
       assert_output_fixture 'marker.setImage("/images/green.png");', 
@@ -296,7 +296,7 @@ class MarkerTest < Test::Unit::TestCase
   end
   
   def test_circle
-    Eschaton.with_global_script do |script|
+    with_eschaton do |script|
       assert_output_fixture 'marker = new GMarker(new GLatLng(-33.947, 18.462), {draggable: false});
                              circle_marker = drawCircle(marker.getLatLng(), 1.5, 40, null, 2, null, "#0055ff", null);', 
                              script.record_for_test{
@@ -332,7 +332,7 @@ class MarkerTest < Test::Unit::TestCase
   
   # TODO - Figure this on out!
   def xtest_set_tooltip
-    Eschaton.with_global_script do |script|            
+    with_eschaton do |script|            
       marker = self.default_marker
       
       assert_output_fixture :marker_set_tooltip_default, 
@@ -370,7 +370,7 @@ class MarkerTest < Test::Unit::TestCase
   end
 
   def test_update_tooltip
-    Eschaton.with_global_script do |script|            
+    with_eschaton do |script|            
       map = Google::Map.new
       marker = map.add_marker :var => :marker, :location => {:latitude => -33.947, :longitude => 18.462},
                               :tooltip => {:text => 'tooltip'}
@@ -396,7 +396,7 @@ class MarkerTest < Test::Unit::TestCase
   end
 
   def test_show_tooltip
-    Eschaton.with_global_script do |script|            
+    with_eschaton do |script|            
       marker = Google::Marker.new :var => :marker, :location => {:latitude => -33.947, :longitude => 18.462},
                                   :tooltip => {:text => 'This is sparta!'}
 
@@ -408,7 +408,7 @@ class MarkerTest < Test::Unit::TestCase
   end
 
   def test_hide_tooltip
-    Eschaton.with_global_script do |script|            
+    with_eschaton do |script|            
       marker = Google::Marker.new :var => :marker, :location => {:latitude => -33.947, :longitude => 18.462},
                                   :tooltip => {:text => 'This is sparta!'}
 
@@ -420,7 +420,7 @@ class MarkerTest < Test::Unit::TestCase
   end
 
   def test_draggable
-    Eschaton.with_global_script do |script|
+    with_eschaton do |script|
       assert_output_fixture 'marker = new GMarker(existing_location, {draggable: false});',
                             script.record_for_test {
                               marker = Google::Marker.new :var => :marker, :location => :existing_location
@@ -437,7 +437,7 @@ class MarkerTest < Test::Unit::TestCase
   end
 
   def test_mouse_over
-    Eschaton.with_global_script do |script|
+    with_eschaton do |script|
       marker = self.default_marker
       
       assert_output_fixture :marker_mouse_over,
@@ -451,7 +451,7 @@ class MarkerTest < Test::Unit::TestCase
   end
 
   def test_mouse_off
-    Eschaton.with_global_script do |script|
+    with_eschaton do |script|
       marker = self.default_marker
       
       assert_output_fixture :marker_mouse_off,
@@ -465,7 +465,7 @@ class MarkerTest < Test::Unit::TestCase
   end
 
   def test_move_to
-    Eschaton.with_global_script do |script|            
+    with_eschaton do |script|            
       marker = self.default_marker
       assert_output_fixture 'marker.setLatLng(new GLatLng(-33.947, 18.562));', 
                              script.record_for_test{
@@ -493,7 +493,7 @@ class MarkerTest < Test::Unit::TestCase
   end
   
   def test_after_info_window_opened
-    Eschaton.with_global_script do |script|
+    with_eschaton do |script|
       marker = self.default_marker
   
       assert_output_fixture 'function marker_infowindowopen(marker){

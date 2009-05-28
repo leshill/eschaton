@@ -5,7 +5,7 @@ Test::Unit::TestCase.output_fixture_base = File.dirname(__FILE__)
 class GoogleGeneratorExtTest < Test::Unit::TestCase
 
   def test_global_map_var    
-    Eschaton.with_global_script do |script|
+    with_eschaton do |script|
 
       script.google_map_script do
         map = Google::Map.new :center => :cape_town, :zoom => 9
@@ -67,7 +67,7 @@ class GoogleGeneratorExtTest < Test::Unit::TestCase
   
   
   def test_google_map_script
-    Eschaton.with_global_script do |script|
+    with_eschaton do |script|
       
       assert_output_fixture :google_map_script_no_body, script.record_for_test {
                                                              script.google_map_script {}
@@ -84,7 +84,7 @@ class GoogleGeneratorExtTest < Test::Unit::TestCase
   end
   
   def test_set_coordinate_elements
-    Eschaton.with_global_script do |script|
+    with_eschaton do |script|
       
       assert_output_fixture "$('latitude').value = location.lat();
                              $('longitude').value = location.lng();", 

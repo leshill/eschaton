@@ -4,7 +4,15 @@ require 'test_help'
 
 class Test::Unit::TestCase
   cattr_accessor :output_fixture_base
-
+  
+  def with_eschaton(&block)
+    Eschaton.with_global_script(&block)
+  end
+  
+  def assert_returned_javascript(return_value, javascript_call)
+    assert_equal return_value.to_sym, javascript_call
+  end
+  
   def assert_output_fixture(output_to_compare, generator, message = nil)  
     if output_to_compare.is_a?(Symbol)
       fixture_base = self.output_fixture_base || '.'

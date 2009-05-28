@@ -29,7 +29,7 @@ class MapTest < Test::Unit::TestCase
   end
 
   def test_add_control
-    Eschaton.with_global_script do |script|
+    with_eschaton do |script|
       script.google_map_script do
         map = self.default_test_map
 
@@ -72,7 +72,7 @@ class MapTest < Test::Unit::TestCase
   end
 
   def test_open_info_window_output
-    Eschaton.with_global_script do |script|
+    with_eschaton do |script|
       script.google_map_script do
         map = self.default_test_map
       
@@ -122,7 +122,7 @@ class MapTest < Test::Unit::TestCase
   end
   
   def test_update_info_window
-    Eschaton.with_global_script do |script|
+    with_eschaton do |script|
       script.google_map_script do      
         map = self.default_test_map    
       
@@ -135,7 +135,7 @@ class MapTest < Test::Unit::TestCase
   end
   
   def test_click_output
-    Eschaton.with_global_script do |script|
+    with_eschaton do |script|
       script.google_map_script do
         map = self.default_test_map 
 
@@ -165,7 +165,7 @@ class MapTest < Test::Unit::TestCase
   end
 
   def test_add_marker_output
-    Eschaton.with_global_script do |script|
+    with_eschaton do |script|
       script.google_map_script do
         map = self.default_test_map
       
@@ -191,7 +191,7 @@ class MapTest < Test::Unit::TestCase
   end
 
   def test_replace_marker_output
-    Eschaton.with_global_script do |script|
+    with_eschaton do |script|
       map = self.default_test_map
 
       assert_output_fixture "map.removeOverlay(marker);
@@ -212,7 +212,7 @@ class MapTest < Test::Unit::TestCase
   end
 
   def test_change_marker_output
-    Eschaton.with_global_script do |script|
+    with_eschaton do |script|
       map = self.default_test_map
 
       assert_output_fixture "map.removeOverlay(create_spot);
@@ -235,7 +235,7 @@ class MapTest < Test::Unit::TestCase
   end
 
   def test_add_line
-    Eschaton.with_global_script do |script|
+    with_eschaton do |script|
       map = self.default_test_map
       line = map.add_line :vertices => {:latitude => -33.947, :longitude => 18.462}
       
@@ -245,7 +245,7 @@ class MapTest < Test::Unit::TestCase
 
 
   def test_add_circle
-    Eschaton.with_global_script do |script|
+    with_eschaton do |script|
       map = self.default_test_map
       circle = map.add_circle :location => {:latitude => -33.947, :longitude => 18.462}
 
@@ -255,7 +255,7 @@ class MapTest < Test::Unit::TestCase
 
 
   def test_add_circle_output
-    Eschaton.with_global_script do |script|
+    with_eschaton do |script|
       map = self.default_test_map
 
       add_circle_output = 'circle = drawCircle(new GLatLng(-33.947, 18.462), 1.5, 40, null, 2, null, "#0055ff", null);
@@ -275,7 +275,7 @@ class MapTest < Test::Unit::TestCase
 
 
   def test_add_line_output
-    Eschaton.with_global_script do |script|
+    with_eschaton do |script|
       map = self.default_test_map
       
       assert_output_fixture :map_add_line_with_vertex, 
@@ -334,7 +334,7 @@ class MapTest < Test::Unit::TestCase
   end
 
   def test_clear_output
-    Eschaton.with_global_script do |script|
+    with_eschaton do |script|
       map = self.default_test_map
       
       assert_output_fixture 'map.clearOverlays();',
@@ -345,7 +345,7 @@ class MapTest < Test::Unit::TestCase
   end
 
   def test_show_map_blowup_output
-    Eschaton.with_global_script do |script|
+    with_eschaton do |script|
       map = self.default_test_map
       
       # Default with hash location
@@ -385,7 +385,7 @@ class MapTest < Test::Unit::TestCase
   end
 
   def test_remove_type
-    Eschaton.with_global_script do |script|
+    with_eschaton do |script|
       map = self.default_test_map
       
       assert_output_fixture 'map.removeMapType(G_SATELLITE_MAP);', 
@@ -403,7 +403,7 @@ class MapTest < Test::Unit::TestCase
   def test_best_fit_center
     Google::Scripts.clear_events!
 
-    Eschaton.with_global_script do |script|
+    with_eschaton do |script|
       script.google_map_script do
         map = Google::Map.new :center => :best_fit
 
@@ -418,7 +418,7 @@ class MapTest < Test::Unit::TestCase
   def test_best_fit_center_and_zoom
     Google::Scripts.clear_events!
         
-    Eschaton.with_global_script do |script|
+    with_eschaton do |script|
       script.google_map_script do
         map = Google::Map.new :center => :best_fit, :zoom => :best_fit
 
@@ -431,7 +431,7 @@ class MapTest < Test::Unit::TestCase
   end
 
   def test_auto_zoom
-    Eschaton.with_global_script do |script|
+    with_eschaton do |script|
       map = self.default_test_map
             
       assert_output_fixture 'map.setZoom(map.getBoundsZoomLevel(track_bounds));', 
@@ -442,7 +442,7 @@ class MapTest < Test::Unit::TestCase
   end
 
   def test_auto_center
-    Eschaton.with_global_script do |script|
+    with_eschaton do |script|
       map = self.default_test_map
             
       assert_output_fixture 'if(!track_bounds.isEmpty()){
@@ -455,7 +455,7 @@ class MapTest < Test::Unit::TestCase
   end
 
   def test_auto_fit
-    Eschaton.with_global_script do |script|
+    with_eschaton do |script|
       map = self.default_test_map
             
       assert_output_fixture 'map.setZoom(map.getBoundsZoomLevel(track_bounds));
@@ -469,7 +469,7 @@ class MapTest < Test::Unit::TestCase
   end
 
   def test_add_ground_overlay
-    Eschaton.with_global_script do |script|
+    with_eschaton do |script|
       map = self.default_test_map
       output = "bounds = new GLatLngBounds(new GLatLng(-33.947, 18.462), new GLatLng(-34.947, 19.462));
                 ground_overlay = new GGroundOverlay('http://battlestar/images/cylon_base_star.png', bounds);
@@ -498,7 +498,7 @@ class MapTest < Test::Unit::TestCase
   end
   
   def test_after_info_window_opened
-    Eschaton.with_global_script do |script|
+    with_eschaton do |script|
       map = self.default_test_map
   
       assert_output_fixture 'function map_infowindowopen(map){

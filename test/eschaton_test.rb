@@ -23,7 +23,7 @@ class EschatonTest < Test::Unit::TestCase
   end
 
   def test_write_to_global_script    
-    Eschaton.with_global_script do |script|
+    with_eschaton do |script|
       assert_output_fixture 'One!
                              Two!', 
                              script.record_for_test {
@@ -50,7 +50,7 @@ class EschatonTest < Test::Unit::TestCase
   def test_global_script_with_no_script
     assert_nil Eschaton.global_script
 
-    return_script = Eschaton.with_global_script do |script|
+    return_script = with_eschaton do |script|
                       assert_not_nil script
                       assert_not_nil Eschaton.global_script
                       assert_equal script, Eschaton.global_script         
