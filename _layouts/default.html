@@ -15,18 +15,16 @@
         $('a.zoom').fancyZoom({scaleImg: true, closeOnClick: true, directory: '/eschaton/images/fancy_zoom'});
       });
     </script>
-    <div id="header" onclick="window.location.href = '/eschaton';">
-       <h1>
-         * Eschaton *
-       </h1>
+    <div id="header" onclick="window.location.href = '/eschaton';" style='height: auto; display: block; clear: both;'>
+       <table>
+        <tr>
+          <td><img src="/eschaton/images/logo.png"> </img></td>
+          <td><h1>Eschaton - A language project.</h1></td>
+        </tr>
+       </table>
     </div>
     <div id="content">    
-
-    {{content}}
-            
-    </div>
-    <div id="footer">
-      
+      {{content}}          
     </div>
   </body>
 </html>
