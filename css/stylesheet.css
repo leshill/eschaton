@@ -14,6 +14,9 @@ body {
 	padding-top: 0;
 	height: 98%;
 	color: #ECECEC;
+	background-image: url(/eschaton/images/drips.png);
+	background-position: top right;
+	background-repeat: no-repeat;
 }
 
 a:link { color: #FFA500; }
