@@ -1,7 +1,7 @@
 == eschaton => google maps on rails for humans
 
 Helps with writing google map mashups in Rails bringing together the Bodacity(measure of bodaciousness) of 
-Google Maps and Rails. If you have an issue please feed-it-back on Github issues[http://github.com/yawningman/eschaton/issues]
+Google Maps and Rails. If you have an issue please feed-back on Github issues[http://github.com/yawningman/eschaton/issues]
 
 <b>If you find the plugin useful and wish to donate something, please donate the equivalent in money or your time to your local charities, plant
 a tree that is indigenous to your area or lend your support to people who truly need it.</b>
