@@ -84,7 +84,7 @@ module Google
           options[:url][:location] = Google::UrlHelper.encode_location(options[:location])
         end
 
-        self.script.get(options[:url]) do |data|
+        self.script.get(:url => options[:url]) do |data|
           yield data
         end
       end

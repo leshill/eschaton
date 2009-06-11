@@ -21,9 +21,18 @@ module JqueryGeneratorExt
 
   # Makes a get request to the +url+ and yields the +data+ variable in which the contents of the request are stored.
   # See Escahton.url_for_javascript for +url+ options.
-  def get(url)
+  #
+  # ==== Options:
+  # * +url+ - Required. The url to post to, see Escahton.url_for_javascript for supported options.
+  # * +eval_response+ - Optional. Indicates if the response of the post should be evaled and executed client side.
+  def get(options)
+    options.default! :eval_response => false
+
+    url = options[:url]
+    
     self << "jQuery.get(#{Eschaton.url_for_javascript(url)}, function(data) {"
-    yield :data
+    yield :data if block_given?
+    self.eval(:data) if options[:eval_response] == true
     self <<  "});"    
   end
 
