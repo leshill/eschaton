@@ -24,7 +24,7 @@ module JqueryGeneratorExt
   #
   # ==== Options:
   # * +url+ - Required. The url to post to, see Escahton.url_for_javascript for supported options.
-  # * +eval_response+ - Optional. Indicates if the response of the post should be evaled and executed client side.
+  # * +eval_response+ - Optional. Indicates if the response should be evaled and executed client side.
   def get(options)
     options.default! :eval_response => false
 
@@ -42,7 +42,7 @@ module JqueryGeneratorExt
   # * +url+ - Required. The url to post to, see Escahton.url_for_javascript for supported options.
   # * +form+ - Optional. The id of the form to post.
   # * +params+ - Optional. Parameters to post
-  # * +eval_response+ - Optional. Indicates if the response of the post should be evaled and executed client side.
+  # * +eval_response+ - Optional. Indicates if the response should be evaled and executed client side.
   def post(options)
     options.assert_valid_keys :url, :form, :params, :eval_response
     options.default! :form => nil, :params => {}, :eval_response => false
