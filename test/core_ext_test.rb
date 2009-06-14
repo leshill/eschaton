@@ -19,5 +19,15 @@ class GoogleCoreExtTest < Test::Unit::TestCase
    assert_equal '{color: "blue", zone: zz1}',
                  {:color => 'blue', :zone => 'zz1'}.to_google_options(:dont_convert => [:zone])
   end
-  
+
+  def test_hash_default
+    project_value = 'project'
+    options = {:name => nil}.default!(:name => 'name', :project => project_value)
+
+    assert options.has_option?(:name)
+    assert options.has_option?(:project)
+    assert_nil options[:name]
+    assert_equal project_value, options[:project]
+  end
+
 end

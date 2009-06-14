@@ -76,6 +76,15 @@ class PreparedOptionsTest < Test::Unit::TestCase
 
     assert_equal @name_value, prepared_options[:name]
     assert_equal @project_value, prepared_options[:project]    
+
+    prepared_options = {:name => nil}.prepare_options do |prepared_options|
+      prepared_options.default! :name => @name_value, :project => @project_value
+    end
+
+    assert prepared_options.has_option?(:name)
+    assert prepared_options.has_option?(:project)
+    assert_nil prepared_options[:name]
+    assert_equal @project_value, prepared_options[:project]
   end
 
   def test_validate_presence_of

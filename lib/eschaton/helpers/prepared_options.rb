@@ -72,7 +72,7 @@ module Eschaton
       self[option].not_nil?
     end    
 
-    # Defaults options if they are not present or have a nil value.
+    # Defaults options if they are not present.
     #
     #   prepared_options = PreparedOptions.new(:name => "yawningman", :project => nil)
     #   prepared_options.default! :zoom_level => 10, :project => "eschaton"
@@ -80,9 +80,7 @@ module Eschaton
     #   prepared_options[:zoom_level] #=> 10
     #   prepared_options[:project] #=> "eschaton"
     def default!(defaults)
-      defaults.each do |option, default_value|
-        self[option] = default_value unless self.has_value?(option)
-      end
+      options.replace(defaults.merge(options))
     end
 
     # Validates that the given +options+ are present and do not have blank values.
